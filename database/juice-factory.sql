@@ -223,6 +223,11 @@ ALTER TABLE `machines`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`machine_id`) REFERENCES `machines` (`id`);
+
+ALTER TABLE `user` 
+MODIFY `role` ENUM('HR', 'Manager', 'Employee', 'Accountant', 'super-employee') 
+NOT NULL DEFAULT 'Employee';
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
