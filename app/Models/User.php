@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    // Specify the custom table name
+    protected $table = 'user';  // Ensure this matches your table name
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +19,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password', 'birth_date', 'gender', 'role',
+        'phone-number', 'address', 'salary', 'start_date', 'machine_id'
     ];
 
     /**
@@ -34,7 +34,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -42,7 +42,9 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'birth_date' => 'date',  // Cast birth_date as a date
+            'start_date' => 'date',  // Cast start_date as a date
+            'salary' => 'float',      // Cast salary as a float
         ];
     }
 }
