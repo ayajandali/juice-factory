@@ -1,16 +1,112 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Super Employee Dashboard
+            {{ __('Super Employee Dashboard') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    Welcome, Super Employee! 🎉
-                </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+            <!-- Daily Work Status Form -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-4">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Daily Work Status</h3>
+                <form method="POST" action="{{ route('super-employee.store') }}">
+                    @csrf
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Work Status</label>
+                        <select name="work_status" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
+                            <option value="">-- Select Work Status --</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Delayed">Delayed</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Notes</label>
+                        <textarea name="notes" rows="3" class="form-input rounded-md shadow-sm mt-1 block w-full"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Date</label>
+                        <input type="date" name="date" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
+                    </div>
+
+                    <x-primary-button>Submit Status</x-primary-button>
+
+                    @if (session('success'))
+                    <div class="p-4 mb-4 text-green-500 bg-green-100 rounded-md">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
+                    <!-- Display errors specific to Daily Work Status form -->
+                    @error('date_duplicate')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+                @enderror
+                </form>
+            </div>
+
+            <!-- Leave Request Form -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Request a Leave</h3>
+                <form method="POST" action="{{ route('super-employee.leave-request') }}">
+                    @csrf
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Leave Type</label>
+                        <select name="leave_type" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
+                            <option value="">-- Select Leave Type --</option>
+                            <option value="Sick leave">Sick Leave</option>
+                            <option value="Maternity leave">Maternity Leave</option>
+                            <option value="Paternity leave">Paternity Leave</option>
+                            <option value="Emergency leave">Emergency Leave</option>
+                            <option value="Marriage leave">Marriage Leave</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Start Date</label>
+                        <input type="date" name="start_date" class="form-input rounded-md shadow-sm mt-1 block w-full" required> 
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">End Date</label>
+                        <input type="date" name="end_date" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Payment</label>
+                        <select name="is_paid" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
+                            <option value="">-- Select if you want a paid leave--</option>
+                            <option value="paid">paid</option>
+                            <option value="not_paid">not paid</option>
+                        </select>
+                    </div>
+
+                    <x-primary-button>Submit Request</x-primary-button>
+
+                    @if (session('leave_success'))
+                    <div class="mb-4 font-medium text-sm text-green-600 bg-green-100 p-3 rounded">
+                        {{ session('leave_success') }}
+                    </div>
+                    @endif
+
+                    <!-- Display general errors in leave request form -->
+                    @if ($errors->has('start_date'))
+                    <div class="text-red-600 text-sm mt-1">{{ $errors->first('start_date') }}</div>
+                    @endif
+
+                    @if ($errors->has('end_date'))
+                    <div class="text-red-600 text-sm mt-1">{{ $errors->first('end_date') }}</div>
+                    @endif
+                </form>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-4 text-right">
+                <a href="{{ route('super-employee.leave-requests') }}" class="text-blue-500">Show All Requests</a>
             </div>
         </div>
     </div>
