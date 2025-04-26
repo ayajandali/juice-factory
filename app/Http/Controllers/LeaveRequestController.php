@@ -9,8 +9,8 @@ class LeaveRequestController extends Controller
 {
     public function index()
     {
-        $leaveRequests = LeaveRequest::all();
-        return view('dashboards.super-employee-index' , compact('leaveRequests'));
+        $leaveRequests = LeaveRequest::where('user_id', auth()->id())->get();
+        return view('dashboards.requests' , compact('leaveRequests'));
     }
 
     public function store(Request $request)

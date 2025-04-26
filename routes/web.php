@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperEmployeeController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\DailyWorkStatusController;
 use Illuminate\Support\Facades\Route;
@@ -24,14 +25,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/super-employee/leave-request', [LeaveRequestController::class, 'store'])
     ->name('super-employee.leave-request');
 
-    Route::get('/dashboards/super-employee-index', [LeaveRequestController::class, 'index'])
-        ->name('super-employee.leave-requests');
+    Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
+        ->name('requests');
 
     Route::get('/super-employee', [DailyWorkStatusController::class, 'index'])
         ->name('super-employee.index');
 
     Route::post('/super-employee', [DailyWorkStatusController::class, 'store'])
         ->name('super-employee.store');
+
+    Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
+        ->name('employee.dashboard');
+
+     Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
+        ->name('employee.leave-request');
 });
 
 
