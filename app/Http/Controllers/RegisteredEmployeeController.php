@@ -87,6 +87,7 @@ class RegisteredEmployeeController extends Controller
             'first_name'=>'required|string|max:255',
             'last_name'=>'required|string|max:255',
             'email' => 'required|email|unique:employees,email,' . $id,
+            'password'=>'required|string',
             'birth_date'=>'required|date',
             'gender'=>'required|in:male,female',
             'role'=>'required|in:HR,Manager,Employee,Accountant,super-employee',
