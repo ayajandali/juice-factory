@@ -5,6 +5,9 @@ use App\Http\Controllers\SuperEmployeeController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\DailyWorkStatusController;
+use App\Http\Controllers\AccountantController;
+use App\Http\Controllers\ExportInvoiceController;
+use App\Http\Controllers\ImportInvoiceController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,6 +47,22 @@ Route::middleware('auth')->group(function () {
 
      Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
         ->name('employee.leave-request');
+
+    Route::get('/accountant/dashboards', [AccountantController::class, 'index'])
+        ->name('accountant.dashboard');
+
+    Route::get('/accountant/export', [ExportInvoiceController::class, 'index'])
+        ->name('accountant.export');
+
+    Route::post('/accountant/export', [ExportInvoiceController::class, 'store'])
+        ->name('accountant.export.store');
+
+    Route::get('/accountant/import', [ImportInvoiceController::class, 'index'])
+        ->name('accountant.import');
+
+    Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
+        ->name('accountant.import.store');
+        
 });
 
 
