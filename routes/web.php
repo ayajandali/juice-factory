@@ -47,23 +47,37 @@ Route::middleware('auth')->group(function () {
 
      Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
         ->name('employee.leave-request');
-
-    Route::get('/accountant/dashboards', [AccountantController::class, 'index'])
-        ->name('accountant.dashboard');
-
-    Route::get('/accountant/export', [ExportInvoiceController::class, 'index'])
-        ->name('accountant.export');
-
-    Route::post('/accountant/export', [ExportInvoiceController::class, 'store'])
-        ->name('accountant.export.store');
-
-    Route::get('/accountant/import', [ImportInvoiceController::class, 'index'])
-        ->name('accountant.import');
-
-    Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
-        ->name('accountant.import.store');
         
+     
+        
+    
 });
+
+Route::middleware(['auth','role:HR'])->group(function(){
+// عرض داش بورد ال hr
+    Route::get('/hr/dashboard', [HrController::class, 'index'])
+    ->name('hr.dashboard');
+    //عرض جميع الموظفين الموجودين في المعمل 
+    Route::get('/hr/employees',[RegisteredEmployeeController::class,'index'])
+    ->name('hr.employees.index');
+   //انشاء سجل موظف لموظف جديد 
+    Route::get('/hr/employees/create',[RegisteredEmployeeController::class,'create'])
+    ->name('hr.employees.create');
+   //حفظ الموظف الجديد
+    Route::post('/hr/employees/',[RegisteredEmployeeController::class,'store'])
+    ->name('hr.employees.store');
+    // عرض فورم الموظف للتعديل 
+    Route::get('/hr/employees/{employee}/edit', [RegisteredEmployeeController::class, 'edit'])
+    ->name('hr.employees.edit');
+    //تعديل بيانات الموظف 
+    Route::put('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'update'])
+    ->name('hr.employees.update');
+    // حذف الموظف
+        Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
+        ->name('hr.employees.destroy');
+});
+
+
 
 
 
