@@ -54,9 +54,10 @@ class ImportInvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+        $invoices = ImportInvoice::all();
+        return view('accountant.import_list' , compact('invoices'));
     }
 
     /**
@@ -64,7 +65,9 @@ class ImportInvoiceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $invoice = ImportInvoice::findOrFail($id);
+        return view('accountant.import_edit', compact('invoice'));
+
     }
 
     /**
@@ -72,7 +75,10 @@ class ImportInvoiceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $invoice = ImportInvoice::findOrFail($id);
+        $invoice->update($request->all());
+    
+        return redirect()->route('import.all.invoice')->with('invoice_update', 'Invoice updated successfully!');
     }
 
     /**

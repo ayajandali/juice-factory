@@ -28,6 +28,11 @@
             <hr class="my-6 border-t-2 border-gray-300">
 
             <!-- Add more content here as needed -->
+
+              
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-4 text-right">
+                <a href="{{ route('import.all.invoice') }}" class="text-blue-500">Show All import invoices</a>
+            </div>
         </div>
     </div>
 </x-app-layout>

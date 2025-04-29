@@ -44,7 +44,7 @@
                         <select name="type" id="type" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                             <option value="raw materials">Raw Materials</option>
                             <option value="salary">Salary</option>
-                            <option value="maintenance">Maintenance</option>
+                            <option value="maintanance">Maintenance</option>
                         </select>
                     </div>
 
@@ -70,6 +70,8 @@
                 {{ session('import_status') }}
             </div>
             @endif
+
+            
         </div>
     </div>
 </x-app-layout>
