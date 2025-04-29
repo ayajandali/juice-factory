@@ -5,9 +5,15 @@ use App\Http\Controllers\SuperEmployeeController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\DailyWorkStatusController;
+<<<<<<< HEAD
 use App\Http\Controllers\HrController;
 use App\Http\Controllers\RegisteredEmployeeController;
 use App\Http\Controllers\HrleaveRequestController;
+=======
+use App\Http\Controllers\AccountantController;
+use App\Http\Controllers\ExportInvoiceController;
+use App\Http\Controllers\ImportInvoiceController;
+>>>>>>> 90ae69c1979c651ee10cb5d76d9639f7ac702ca9
 use Illuminate\Support\Facades\Route;
 
 
@@ -27,14 +33,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     
+    Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
+        ->name('requests');
+
+    
+});
+
+Route::middleware(['auth', 'checkrole:super-employee'])->group(function(){
+
     Route::get('super-employee/dashboard', [SuperEmployeeController::class, 'index'])
         ->name('super-employee.dashboard');
 
     Route::post('/super-employee/leave-request', [LeaveRequestController::class, 'store'])
         ->name('super-employee.leave-request');
-
-    Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
-        ->name('requests');
 
     Route::get('/super-employee', [DailyWorkStatusController::class, 'index'])
         ->name('super-employee.index');
@@ -42,17 +53,68 @@ Route::middleware('auth')->group(function () {
     Route::post('/super-employee', [DailyWorkStatusController::class, 'store'])
         ->name('super-employee.store');
 
-    Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
-        ->name('employee.dashboard');
-
-     Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
-        ->name('employee.leave-request');
-        
-     
-        
-    
 });
+<<<<<<< HEAD
 Route::middleware(['auth'])->group(function(){
+=======
+
+Route::middleware(['auth', 'checkrole:Employee'])->group(function(){
+
+    Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
+         ->name('employee.dashboard');
+
+    Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
+         ->name('employee.leave-request');
+});
+
+Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
+
+    Route::get('/accountant/dashboards', [AccountantController::class, 'index'])
+        ->name('accountant.dashboard');
+
+    Route::get('/accountant/export', [ExportInvoiceController::class, 'index'])
+        ->name('accountant.export');
+
+    Route::post('/accountant/export', [ExportInvoiceController::class, 'store'])
+        ->name('accountant.export.store');
+
+    Route::get('/accountant/import', [ImportInvoiceController::class, 'index'])
+        ->name('accountant.import');
+
+    Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
+        ->name('accountant.import.store');
+
+
+    Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
+        ->name('import.all.invoice');
+
+    Route::get('/accountant/import/allInvoice/{id}/edit', [ImportInvoiceController::class, 'edit'])
+        ->name('import.edit.invoice');
+
+    Route::put('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'update'])
+        ->name('import.update.invoice');
+
+    Route::delete('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'destroy'])
+        ->name('import.destroy.invoice');
+
+
+
+    Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
+        ->name('export.all.invoice');
+
+    Route::get('/accountant/export/allInvoice/{id}/edit', [ExportInvoiceController::class, 'edit'])
+        ->name('export.edit.invoice');
+    
+    Route::put('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'update'])
+        ->name('export.update.invoice');
+    
+    Route::delete('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'destroy'])
+        ->name('export.destroy.invoice');
+
+});
+
+Route::middleware(['auth','checkrole::HR'])->group(function(){
+>>>>>>> 90ae69c1979c651ee10cb5d76d9639f7ac702ca9
 // عرض داش بورد ال hr
     Route::get('/hr/dashboard', [HrController::class, 'index'])
     ->name('hr.dashboard');
