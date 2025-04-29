@@ -33,6 +33,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-4 text-right">
                 <a href="{{ route('import.all.invoice') }}" class="text-blue-500">Show All import invoices</a>
             </div>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-4 text-right">
+                <a href="{{ route('export.all.invoice') }}" class="text-blue-500">Show All export invoices</a>
+            </div>
         </div>
     </div>
 </x-app-layout>

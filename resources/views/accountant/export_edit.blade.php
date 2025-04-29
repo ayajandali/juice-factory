@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-            {{ __('Edit Import Invoice') }}
+            {{ __('Edit Export Invoice') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="bg-white shadow-lg sm:rounded-lg p-8">
             <h1 class="text-3xl font-semibold text-gray-800 mb-6">Edit Invoice #{{ $invoice->invoice_number }}</h1>
 
-            <form action="{{ route('import.update.invoice', $invoice->id) }}" method="POST">
+            <form action="{{ route('export.update.invoice', $invoice->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -38,15 +38,6 @@
                         <input type="number" name="tax" id="tax" value="{{ old('tax', $invoice->tax) }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md">
                     </div>
 
-                    <!-- Type -->
-                    <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-                        <select name="type" id="type" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md" required>
-                            <option value="raw materials" {{ $invoice->type == 'raw materials' ? 'selected' : '' }}>Raw Materials</option>
-                            <option value="salary" {{ $invoice->type == 'salary' ? 'selected' : '' }}>Salary</option>
-                            <option value="maintanance" {{ $invoice->type == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
-                        </select>
-                    </div>
 
                     <!-- Description -->
                     <div>
@@ -62,9 +53,9 @@
                     </div>
                 </div>
             </form>
-            @if (session('invoice_update'))
+            @if (session('export_update'))
             <div class="mt-4 p-4 text-sm text-green-600 bg-green-100 rounded-md">
-                {{ session('invoice_update') }}
+                {{ session('export_update') }}
             </div>
             @endif
         </div>

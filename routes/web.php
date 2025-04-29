@@ -75,6 +75,7 @@ Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
     Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
         ->name('accountant.import.store');
 
+
     Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
         ->name('import.all.invoice');
 
@@ -83,6 +84,16 @@ Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
 
     Route::put('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'update'])
         ->name('import.update.invoice');
+
+
+    Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
+        ->name('export.all.invoice');
+
+    Route::get('/accountant/export/allInvoice/{id}/edit', [ExportInvoiceController::class, 'edit'])
+        ->name('export.edit.invoice');
+    
+    Route::put('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'update'])
+        ->name('export.update.invoice');
 
 });
 

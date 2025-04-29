@@ -52,9 +52,10 @@ class ExportInvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+        $invoices = ExportInvoice::all();
+        return view('accountant.export_list' , compact('invoices'));
     }
 
     /**
@@ -62,7 +63,8 @@ class ExportInvoiceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $invoice = ExportInvoice::findOrFail($id);
+        return view('accountant.export_edit', compact('invoice'));
     }
 
     /**
@@ -70,7 +72,10 @@ class ExportInvoiceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $invoice = ExportInvoice::findOrFail($id);
+        $invoice->update($request->all());
+    
+        return redirect()->route('export.all.invoice')->with('export_update', 'Invoice updated successfully!');
     }
 
     /**
