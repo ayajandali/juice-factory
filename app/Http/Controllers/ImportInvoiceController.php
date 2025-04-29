@@ -86,6 +86,9 @@ class ImportInvoiceController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $invoice = ImportInvoice::findOrFail($id);
+        $invoice->delete();
+    
+        return redirect()->route('import.all.invoice')->with('import_delete', 'Invoice deleted successfully!');
     }
 }

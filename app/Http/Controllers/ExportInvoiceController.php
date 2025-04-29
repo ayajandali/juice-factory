@@ -83,6 +83,9 @@ class ExportInvoiceController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $invoice = ExportInvoice::findOrFail($id);
+        $invoice->delete();
+    
+        return redirect()->route('export.all.invoice')->with('export_delete', 'Invoice deleted successfully!');
     }
 }

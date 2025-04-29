@@ -85,6 +85,10 @@ Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
     Route::put('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'update'])
         ->name('import.update.invoice');
 
+    Route::delete('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'destroy'])
+        ->name('import.destroy.invoice');
+
+
 
     Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
         ->name('export.all.invoice');
@@ -94,6 +98,9 @@ Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
     
     Route::put('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'update'])
         ->name('export.update.invoice');
+    
+    Route::delete('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'destroy'])
+        ->name('export.destroy.invoice');
 
 });
 

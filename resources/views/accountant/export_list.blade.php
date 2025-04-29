@@ -29,11 +29,20 @@
                             <td class="border px-4 py-2">
                                
                                 <a href="{{ route('export.edit.invoice', $invoice->id) }}" class="text-blue-600 hover:underline">Edit</a>
-                                
+                                <form action="{{ route('export.destroy.invoice', $invoice->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button onclick="return confirm('Are you sure?')" class="text-red-600 hover:underline ml-2">Delete</button>
+                                </form>
 
                             </td>
                         </tr>
                     @endforeach
+                    @if (session('export_delete'))
+                            <div class="mt-4 p-4 text-sm text-green-600 bg-green-100 rounded-md">
+                                {{ session('export_delete') }}
+                            </div>
+                    @endif
                 </tbody>
             </table>
         </div>
