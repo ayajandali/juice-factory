@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\User;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
 
 class RegisteredEmployeeController extends Controller
 {
@@ -24,7 +26,7 @@ class RegisteredEmployeeController extends Controller
         {
             abort(403);
         }
-        return view('dashboards.partials.add-employee-from');
+        return view('dashboards.partials.add-employee-form');
     }
 
     /**
@@ -37,16 +39,16 @@ class RegisteredEmployeeController extends Controller
          'first_name'=>'required|string|max:255',
          'last_name'=>'required|string|max:255',
          'email'=>'required|email|unique:user,email',
-         'password'=>'required|string',
+         'password'=>'required|string|min:8',
          'birth_date'=>'required|date',
          'gender'=>'required|in:male,female',
          'role'=>'required|in:HR,Manager,Employee,Accountant,super-employee',
          'phone'=>'required|string|unique:user,phone',
          'address'=>'required|string',
-         'salary'=>'required|float',
+         'salary'=>'required|numeric',
          'machine_id'=>'required'
         ]);
-        $exists = Employee::where('first_name', $request->first_name)
+        $exists = User::where('first_name', $request->first_name)
         ->where('last_name', $request->last_name)
         ->where('email', $request->email)
         ->where('birth_date', $request->birth_date)
@@ -57,9 +59,10 @@ class RegisteredEmployeeController extends Controller
     if ($exists) {
         return back()->withErrors(['error' => 'This Employee already exists'])->withInput();
     }
-        
-        $employee=User::create($request->all());
-        return redirect()->route('dashboards.allemployees')->with('success','Employee added successfully');
+    $requestData = $request->all();
+    $requestData['password'] = Hash::make($request->password);  // تشفير كلمة المرور
+        $employee=User::create($requestData);
+        return redirect()->route('hr.employees.index')->with('success','Employee added successfully');
     }
 
     /**
@@ -73,9 +76,9 @@ class RegisteredEmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $employee)
+    public function edit(User $employee)
     {
-        return view('dashboards.partials.edit-employee-from',compact('employee'));
+        return view('dashboards.partials.edit-employee-form',compact('employee'));
     }
 
     /**
@@ -86,27 +89,40 @@ class RegisteredEmployeeController extends Controller
          $request->validate([
             'first_name'=>'required|string|max:255',
             'last_name'=>'required|string|max:255',
-            'email' => 'required|email|unique:employees,email,' . $id,
-            'password'=>'required|string',
+            'email' => 'required|email|unique:user,email,' . $id,
+            'password'=>'nullabel|string',
             'birth_date'=>'required|date',
             'gender'=>'required|in:male,female',
             'role'=>'required|in:HR,Manager,Employee,Accountant,super-employee',
-            'phone' => 'required|string|unique:employees,phone,' . $id,
+            'phone' => 'required|string|unique:user,phone,' . $id,
             'address'=>'required|string',
             'salary'=>'required|numeric',
             'machine_id'=>'required'
            ]);
-           $employee=User::update($request->all());
-           return redirect()->route('dashboards.allemployees')->with('success','Employee updated successfully');
+           $employee = User::findOrFail($id);
+
+           $employee->first_name = $request->first_name;
+           $employee->last_name = $request->last_name;
+           $employee->email = $request->email;
+           $employee->role = $request->role;
+           $employee->phone = $request->phone;
+           $employee->birth_date = $request->birth_date;
+           $employee->salary = $request->salary;
+           $employee->address = $request->address;
+           $employee->gender = $request->gender;
+           $employee->machine_id = $request->machine_id;
+           $employee->save();
+           return redirect()->route('hr.employees.index')->with('success','Employee updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $employee)
     {
-        $id->delete();
-        return redirect()->route('dashboards.allemployees')
+       
+        $employee->delete();
+        return redirect()-> route('hr.dashboard')
         ->with('success','emplyee deleted successfully');
 
     }

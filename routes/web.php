@@ -5,6 +5,9 @@ use App\Http\Controllers\SuperEmployeeController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\DailyWorkStatusController;
+use App\Http\Controllers\HrController;
+use App\Http\Controllers\RegisteredEmployeeController;
+use App\Http\Controllers\HrleaveRequestController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,7 +52,7 @@ Route::middleware('auth')->group(function () {
         
     
 });
-Route::middleware(['auth','role:HR'])->group(function(){
+Route::middleware(['auth'])->group(function(){
 // عرض داش بورد ال hr
     Route::get('/hr/dashboard', [HrController::class, 'index'])
     ->name('hr.dashboard');
@@ -69,8 +72,18 @@ Route::middleware(['auth','role:HR'])->group(function(){
     Route::put('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'update'])
     ->name('hr.employees.update');
     // حذف الموظف
-        Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
+    Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
         ->name('hr.employees.destroy');
+     //عرض طلبات الاجازة 
+     Route::get('/hr/leaverequest',[HrleaveRequestController::class,'index'])
+     ->name('hr.leaverequest.index'); 
+     //الموافقة على طلب الاجازة 
+     Route::patch('/hr/leave-requests/{id}/approve', [HRLeaveRequestController::class, 'approve'])
+     ->name('hr.leave_requests.approve');
+     // رفض طلب الاجازة 
+     Route::patch('/hr/leaverequests/{id}/reject', [HRLeaveRequestController::class, 'reject'])
+     ->name('hr.leave_requests.reject'); 
+
 });
 
 

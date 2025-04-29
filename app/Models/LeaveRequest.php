@@ -21,5 +21,10 @@ class LeaveRequest extends Model
     ];
 
     public $timestamps = false;
-}
 
+    // العلاقة مع المستخدم
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}

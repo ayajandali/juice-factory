@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\LeaveRequest;
 
 class HrController extends Controller
 {
@@ -11,7 +12,11 @@ class HrController extends Controller
      */
     public function index()
     {
-        return view('dashboards.hr');
+        $employees_count = User::count();
+        $pending_leaves_count = LeaveRequest::where('status', 'pending')->count();
+    
+        return view('dashboards.hr', compact('employees_count', 'pending_leaves_count'));
+       
     }
 
     /**
