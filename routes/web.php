@@ -27,14 +27,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     
+    Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
+        ->name('requests');
+
+    
+});
+
+Route::middleware(['auth', 'checkrole:super-employee'])->group(function(){
+
     Route::get('super-employee/dashboard', [SuperEmployeeController::class, 'index'])
         ->name('super-employee.dashboard');
 
     Route::post('/super-employee/leave-request', [LeaveRequestController::class, 'store'])
         ->name('super-employee.leave-request');
-
-    Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
-        ->name('requests');
 
     Route::get('/super-employee', [DailyWorkStatusController::class, 'index'])
         ->name('super-employee.index');
@@ -42,13 +47,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/super-employee', [DailyWorkStatusController::class, 'store'])
         ->name('super-employee.store');
 
-    Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
-        ->name('employee.dashboard');
+});
 
-     Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
-        ->name('employee.leave-request');
-    
-        Route::get('/accountant/dashboards', [AccountantController::class, 'index'])
+Route::middleware(['auth', 'checkrole:Employee'])->group(function(){
+
+    Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
+         ->name('employee.dashboard');
+
+    Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
+         ->name('employee.leave-request');
+});
+
+Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
+
+    Route::get('/accountant/dashboards', [AccountantController::class, 'index'])
         ->name('accountant.dashboard');
 
     Route::get('/accountant/export', [ExportInvoiceController::class, 'index'])
@@ -62,10 +74,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
         ->name('accountant.import.store');
-    
+
 });
 
-Route::middleware(['auth','role:HR'])->group(function(){
+Route::middleware(['auth','checkrole::HR'])->group(function(){
 // عرض داش بورد ال hr
     Route::get('/hr/dashboard', [HrController::class, 'index'])
     ->name('hr.dashboard');
