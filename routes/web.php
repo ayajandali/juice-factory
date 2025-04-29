@@ -76,6 +76,7 @@ Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
         ->name('accountant.import.store');
 
 
+
     Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
         ->name('import.all.invoice');
 
@@ -89,6 +90,7 @@ Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
         ->name('import.destroy.invoice');
 
 
+        
 
     Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
         ->name('export.all.invoice');
