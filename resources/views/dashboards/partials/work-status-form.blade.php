@@ -1,40 +1,61 @@
- <!-- Daily Work Status Form -->
- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-4">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Daily Work Status</h3>
-                <form method="POST" action="{{ route('super-employee.store') }}">
-                    @csrf
+<!-- Daily Work Status Form -->
+<div class="bg-white shadow-md rounded-lg p-8 max-w-3xl mx-auto my-10">
+    <h2 class="text-xl font-semibold text-[#011491] mb-4">Daily Work Status</h2>
 
-                    <div class="mb-4">
-                        <label class="block font-medium text-sm text-gray-700">Work Status</label>
-                        <select name="work_status" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
-                            <option value="">-- Select Work Status --</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Delayed">Delayed</option>
-                        </select>
-                    </div>
+    <form method="POST" action="{{ route('super-employee.store') }}">
+        @csrf
 
-                    <div class="mb-4">
-                        <label class="block font-medium text-sm text-gray-700">Notes</label>
-                        <textarea name="notes" rows="3" class="form-input rounded-md shadow-sm mt-1 block w-full"></textarea>
-                    </div>
+        <!-- Work Status -->
+        <div class="mb-4">
+            <label for="work_status" class="block text-sm font-medium text-gray-700 mb-1">Work Status</label>
+            <select id="work_status" name="work_status" class="w-full border border-gray-300 rounded-xl shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
+                <option value="">-- Select Work Status --</option>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="Delayed">Delayed</option>
+            </select>
+        </div>
 
-                    <div class="mb-4">
-                        <label class="block font-medium text-sm text-gray-700">Date</label>
-                        <input type="date" name="date" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
-                    </div>
+        <!-- Notes -->
+        <div class="mb-4">
+            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <textarea id="notes" name="notes" rows="3" class="w-full border border-gray-300 rounded-xl shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+        </div>
 
-                    <x-primary-button>Submit Status</x-primary-button>
+        <!-- Date -->
+        <div class="mb-4">
+            <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <input type="text" id="daily_date" name="date" class="w-full border border-gray-300 rounded-xl shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
+        </div>
 
-                    @if (session('success'))
-                    <div class="p-4 mb-4 text-green-500 bg-green-100 rounded-md">
-                        {{ session('success') }}
-                    </div>
-                    @endif
+        <!-- Submit Button -->
+        <div class="mt-4">
+            <x-primary-button class="bg-[#011491] hover:bg-[#011491] focus:ring-blue-300">
+                Submit Status
+            </x-primary-button>
+        </div>
 
-                    <!-- Display errors specific to Daily Work Status form -->
-                    @error('date_duplicate')
-                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
-                @enderror
-                </form>
+        <!-- Success Message -->
+        @if (session('success'))
+            <div class="mt-4 p-3 text-green-700 bg-green-100 border border-green-300 rounded-md">
+                {{ session('success') }}
             </div>
+        @endif
+
+        <!-- Date Duplicate Error -->
+        @error('date_duplicate')
+            <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
+        @enderror
+    </form>
+</div>
+
+
+<script>
+    const picker = new Litepicker({
+        element: document.getElementById('daily_date'),
+        singleMode: true, // يحدد أنه اختيار يوم واحد فقط
+        format: 'YYYY-MM-DD',
+        maxDate: new Date(), // يمنع اختيار تاريخ بالمستقبل (اختياري)
+    });
+</script>
+

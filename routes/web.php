@@ -11,12 +11,20 @@ use App\Http\Controllers\HrleaveRequestController;
 use App\Http\Controllers\AccountantController;
 use App\Http\Controllers\ExportInvoiceController;
 use App\Http\Controllers\ImportInvoiceController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+Route::get('/juice', function () {
+    return view('juice.home');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -32,6 +40,10 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
         ->name('requests');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])
+        ->name('notifications');
+
 
     
 });

@@ -5,14 +5,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Litepicker CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet">
+
+        <!-- Litepicker JS -->
+        <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -32,5 +45,25 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <!-- calender -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        <script>
+            flatpickr("#calendar-container", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                inline: true,
+                static: true,  // يخلي التقويم ثابت على الصفحة
+                theme: "material_blue", // اختيار قالب لوني جمالي
+                onChange: function(selectedDates, dateStr, instance) {
+                    document.getElementById('date_range').value = dateStr;
+                }
+            });
+        </script>
+        
+
+
     </body>
 </html>

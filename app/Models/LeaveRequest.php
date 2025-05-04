@@ -20,11 +20,12 @@ class LeaveRequest extends Model
         'status',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     // العلاقة مع المستخدم
     public function user()
     {
         return $this->belongsTo(User::class);
+
     }
 }
