@@ -5,17 +5,16 @@ use App\Http\Controllers\SuperEmployeeController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\DailyWorkStatusController;
-<<<<<<< HEAD
 use App\Http\Controllers\HrController;
 use App\Http\Controllers\RegisteredEmployeeController;
 use App\Http\Controllers\HrleaveRequestController;
-=======
 use App\Http\Controllers\AccountantController;
 use App\Http\Controllers\ExportInvoiceController;
 use App\Http\Controllers\ImportInvoiceController;
->>>>>>> 90ae69c1979c651ee10cb5d76d9639f7ac702ca9
+use App\Http\Controllers\Managercontroller;
+use App\Http\Controllers\RegisteredMachineController;
+use App\Http\Controllers\ManagerDailyWorkStatus;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,22 +24,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     
     Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
         ->name('requests');
-
-    
 });
 
-Route::middleware(['auth', 'checkrole:super-employee'])->group(function(){
-
+Route::middleware(['auth', 'checkrole:super-employee'])->group(function() {
     Route::get('super-employee/dashboard', [SuperEmployeeController::class, 'index'])
         ->name('super-employee.dashboard');
 
@@ -52,106 +45,137 @@ Route::middleware(['auth', 'checkrole:super-employee'])->group(function(){
 
     Route::post('/super-employee', [DailyWorkStatusController::class, 'store'])
         ->name('super-employee.store');
-
-});
-<<<<<<< HEAD
-Route::middleware(['auth'])->group(function(){
-=======
-
-Route::middleware(['auth', 'checkrole:Employee'])->group(function(){
-
-    Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
-         ->name('employee.dashboard');
-
-    Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
-         ->name('employee.leave-request');
 });
 
-Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
+Route::middleware(['auth'])->group(function() {
+    Route::middleware(['auth', 'checkrole:Employee'])->group(function() {
+        Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
+            ->name('employee.dashboard');
 
-    Route::get('/accountant/dashboards', [AccountantController::class, 'index'])
-        ->name('accountant.dashboard');
+        Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
+            ->name('employee.leave-request');
+    });
 
-    Route::get('/accountant/export', [ExportInvoiceController::class, 'index'])
-        ->name('accountant.export');
+    Route::middleware(['auth', 'checkrole:Accountant'])->group(function() {
+        Route::get('/accountant/dashboards', [AccountantController::class, 'index'])
+            ->name('accountant.dashboard');
 
-    Route::post('/accountant/export', [ExportInvoiceController::class, 'store'])
-        ->name('accountant.export.store');
+        Route::get('/accountant/export', [ExportInvoiceController::class, 'index'])
+            ->name('accountant.export');
 
-    Route::get('/accountant/import', [ImportInvoiceController::class, 'index'])
-        ->name('accountant.import');
+        Route::post('/accountant/export', [ExportInvoiceController::class, 'store'])
+            ->name('accountant.export.store');
 
-    Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
-        ->name('accountant.import.store');
+        Route::get('/accountant/import', [ImportInvoiceController::class, 'index'])
+            ->name('accountant.import');
 
+        Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
+            ->name('accountant.import.store');
 
-    Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
-        ->name('import.all.invoice');
+        Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
+            ->name('import.all.invoice');
 
-    Route::get('/accountant/import/allInvoice/{id}/edit', [ImportInvoiceController::class, 'edit'])
-        ->name('import.edit.invoice');
+        Route::get('/accountant/import/allInvoice/{id}/edit', [ImportInvoiceController::class, 'edit'])
+            ->name('import.edit.invoice');
 
-    Route::put('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'update'])
-        ->name('import.update.invoice');
+        Route::put('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'update'])
+            ->name('import.update.invoice');
 
-    Route::delete('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'destroy'])
-        ->name('import.destroy.invoice');
+        Route::delete('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'destroy'])
+            ->name('import.destroy.invoice');
 
+        Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
+            ->name('export.all.invoice');
 
-
-    Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
-        ->name('export.all.invoice');
-
-    Route::get('/accountant/export/allInvoice/{id}/edit', [ExportInvoiceController::class, 'edit'])
-        ->name('export.edit.invoice');
+        Route::get('/accountant/export/allInvoice/{id}/edit', [ExportInvoiceController::class, 'edit'])
+            ->name('export.edit.invoice');
+        
+        Route::put('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'update'])
+->name('export.update.invoice');
+        
+        Route::delete('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'destroy'])
+            ->name('export.destroy.invoice');
+    });
     
-    Route::put('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'update'])
-        ->name('export.update.invoice');
-    
-    Route::delete('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'destroy'])
-        ->name('export.destroy.invoice');
+    // HR Routes
+    Route::middleware(['auth', 'checkrole:HR'])->group(function() {
+        // عرض داش بورد ال hr
+        Route::get('/hr/dashboard', [HrController::class, 'index'])
+            ->name('hr.dashboard');
+        
+        // عرض جميع الموظفين الموجودين في المعمل
+        Route::get('/hr/employees', [RegisteredEmployeeController::class, 'index'])
+            ->name('hr.employees.index');
+        
+        // انشاء سجل موظف لموظف جديد
+        Route::get('/hr/employees/create', [RegisteredEmployeeController::class, 'create'])
+            ->name('hr.employees.create');
+        
+        // حفظ الموظف الجديد
+        Route::post('/hr/employees/', [RegisteredEmployeeController::class, 'store'])
+            ->name('hr.employees.store');
+        
+        // عرض فورم الموظف للتعديل
+        Route::get('/hr/employees/{employee}/edit', [RegisteredEmployeeController::class, 'edit'])
+            ->name('hr.employees.edit');
+        
+        // تعديل بيانات الموظف
+        Route::put('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'update'])
+            ->name('hr.employees.update');
+        
+        // حذف الموظف
+        Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
+            ->name('hr.employees.destroy');
+        
+        // عرض طلبات الاجازة
+        Route::get('/hr/leaverequest', [HrleaveRequestController::class, 'index'])
+            ->name('hr.leaverequest.index');
+        
+        // الموافقة على طلب الاجازة
+        Route::patch('/hr/leave-requests/{id}/approve', [HRLeaveRequestController::class, 'approve'])
+            ->name('hr.leave_requests.approve');
+        
+        // رفض طلب الاجازة
+        Route::patch('/hr/leaverequests/{id}/reject', [HRLeaveRequestController::class, 'reject'])
+            ->name('hr.leave_requests.reject');
+    });
 
+     // Manager Routes
+     Route::middleware(['auth', 'checkrole:Manager'])->group(function() {
+        //عرض داش بورد المدير 
+        Route::get('/Manager/dashboard', [ManagerController::class, 'index'])
+            ->name('manager.dashboard');
+        // عرض جميع احوال المعمل اليومية 
+        Route::get('/Manager/DailyWorkStatus', [ManagerDailyWorkStatus::class, 'index'])
+            ->name('manager.dailyworkstatus.index');
+        // عرض جميع الموظفين الموجودين في المعمل
+        Route::get('/Manager/employees', [RegisteredEmployeeController::class, 'index'])
+            ->name('manager.employees.index');
+        
+        // عرض جميع الالات في المعمل 
+        Route::get('/Manager/machine', [RegisteredMachineController::class, 'index'])
+        ->name('manager.machine.index');
+        // اضافة الالة 
+        Route::get('/manager/machine/create', [RegisteredMachineController::class, 'create'])
+            ->name('manager.machine.create');
+        
+        // حفظ الالة 
+        Route::post('/manager/machine/', [RegisteredMachineController::class, 'store'])
+            ->name('manager.machine.store');
+        
+        //عرض فورم التعديل  لالة ما 
+        Route::get('/manager/machine/{machine}/edit', [RegisteredMachineController::class, 'edit'])
+            ->name('manager.machine.edit');
+        
+        //حفظ بيانات التعديل للالة 
+        Route::put('/manager/machine/{machine}', [RegisteredMachineController::class, 'update'])
+            ->name('manager.machine.update');
+        
+        // حذف الالة 
+        Route::delete('/manager/machine/{machine}', [RegisteredMachineController::class, 'destroy'])
+            ->name('manager.machine.destroy');
+        
+    });
 });
 
-Route::middleware(['auth','checkrole::HR'])->group(function(){
->>>>>>> 90ae69c1979c651ee10cb5d76d9639f7ac702ca9
-// عرض داش بورد ال hr
-    Route::get('/hr/dashboard', [HrController::class, 'index'])
-    ->name('hr.dashboard');
-    //عرض جميع الموظفين الموجودين في المعمل 
-    Route::get('/hr/employees',[RegisteredEmployeeController::class,'index'])
-    ->name('hr.employees.index');
-   //انشاء سجل موظف لموظف جديد 
-    Route::get('/hr/employees/create',[RegisteredEmployeeController::class,'create'])
-    ->name('hr.employees.create');
-   //حفظ الموظف الجديد
-    Route::post('/hr/employees/',[RegisteredEmployeeController::class,'store'])
-    ->name('hr.employees.store');
-    // عرض فورم الموظف للتعديل 
-    Route::get('/hr/employees/{employee}/edit', [RegisteredEmployeeController::class, 'edit'])
-    ->name('hr.employees.edit');
-    //تعديل بيانات الموظف 
-    Route::put('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'update'])
-    ->name('hr.employees.update');
-    // حذف الموظف
-    Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
-        ->name('hr.employees.destroy');
-     //عرض طلبات الاجازة 
-     Route::get('/hr/leaverequest',[HrleaveRequestController::class,'index'])
-     ->name('hr.leaverequest.index'); 
-     //الموافقة على طلب الاجازة 
-     Route::patch('/hr/leave-requests/{id}/approve', [HRLeaveRequestController::class, 'approve'])
-     ->name('hr.leave_requests.approve');
-     // رفض طلب الاجازة 
-     Route::patch('/hr/leaverequests/{id}/reject', [HRLeaveRequestController::class, 'reject'])
-     ->name('hr.leave_requests.reject'); 
-
-});
-
-
-
-
-
-
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

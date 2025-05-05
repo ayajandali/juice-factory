@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('status', ['active', 'inactive', 'under_maintenance']);
-            $table->date('last_maintenance_date');
+            $table->date('last_maintenance_date')->nullable();
             $table->timestamps(); // تخلق created_at و updated_at تلقائياً
         });
     }

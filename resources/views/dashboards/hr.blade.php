@@ -8,14 +8,15 @@
         <p>عدد الموظفين: {{ $employees_count }}</p>
         <p>طلبات الإجازة المعلقة: {{ $pending_leaves_count }}</p>
     </div>
+        
+        <a href="{{ route('hr.employees.index') }}" 
+   class="inline-block mt-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+    عرض جميع الموظفين
+</a>
 
-    <!-- رابط عرض جميع الموظفين -->
-    <a href="{{ route('hr.employees.index') }}" class="inline-block mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-        عرض جميع الموظفين
-    </a>
-
-    <!-- رابط عرض طلبات الإجازة -->
-    <a href="{{ route('hr.leaveRequest.index') }}" class="inline-block mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-        عرض طلبات الإجازة
-    </a>
+<!-- رابط عرض طلبات الإجازة -->
+<a href="{{ route('hr.leaverequest.index') }}" 
+   class="inline-block mt-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300">
+    عرض طلبات الإجازة
+</a>
 </x-app-layout>
