@@ -14,8 +14,18 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                olive: {
+                  DEFAULT: '#708238', // زيتوني تقليدي
+                  light: '#9DA65D',
+                  dark: '#556B2F',
+                },
+              },
+        
         },
     },
+
+
 
     plugins: [forms],
 };

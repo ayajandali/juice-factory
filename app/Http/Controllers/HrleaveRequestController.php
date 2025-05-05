@@ -26,6 +26,11 @@ class HrleaveRequestController extends Controller
     $leave->status = 'accepted';
     $leave->save();
 
+    Notification::create([
+        'user_id' => $leave->user_id,
+        'message' => 'Your leave request has been accepted',
+    ]);
+
     return back()->with('success', 'تم قبول الطلب.');
 }
 
@@ -34,6 +39,11 @@ public function reject($id)
     $leave = LeaveRequest::findOrFail($id);
     $leave->status = 'refused';
     $leave->save();
+
+    Notification::create([
+        'user_id' => $leave->user_id,
+        'message' => 'Your leave request has been rejected',
+    ]);
 
     return back()->with('success', 'تم رفض الطلب.');
 }

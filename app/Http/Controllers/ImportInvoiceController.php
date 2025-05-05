@@ -56,7 +56,7 @@ class ImportInvoiceController extends Controller
      */
     public function show()
     {
-        $invoices = ImportInvoice::all();
+        $invoices = ImportInvoice::latest()->paginate(10);
         return view('accountant.import_list' , compact('invoices'));
     }
 
