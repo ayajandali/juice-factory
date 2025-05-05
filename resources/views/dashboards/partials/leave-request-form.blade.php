@@ -41,7 +41,7 @@
 
         <!-- Submit Button -->
         <div class="mt-6">
-            <x-primary-button class="bg-[#011491] hover:bg-[#011491] focus:ring-[#011491]">Submit Request</x-primary-button>
+            <x-primary-button class="bg-[#203096] hover:bg-[#4856a3] focus:ring-[#011491]">Submit Request</x-primary-button>
         </div>
 
         <!-- Success Message -->

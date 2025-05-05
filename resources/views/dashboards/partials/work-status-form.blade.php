@@ -30,7 +30,7 @@
 
         <!-- Submit Button -->
         <div class="mt-4">
-            <x-primary-button class="bg-[#011491] hover:bg-[#011491] focus:ring-blue-300">
+            <x-primary-button class="bg-[#2a3a9f] hover:bg-[#4856a3] focus:ring-blue-300">
                 Submit Status
             </x-primary-button>
         </div>
@@ -51,7 +51,7 @@
 
 
 <script>
-    const picker = new Litepicker({
+    const picker2 = new Litepicker({
         element: document.getElementById('daily_date'),
         singleMode: true, // يحدد أنه اختيار يوم واحد فقط
         format: 'YYYY-MM-DD',

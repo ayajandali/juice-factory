@@ -76,4 +76,13 @@
 
         </div>
     </div>
+
+    <div class="max-w-7xl mx-auto py-12 px-6 lg:px-8">
+        <div class="bg-white shadow-2xl rounded-2xl p-10 space-y-10 border-l-8 border-indigo-500">
+
+        <!-- Leave Request Form -->
+        @include('dashboards.partials.leave-request-form')
+        </div>
+        
+    </div>
 </x-app-layout>

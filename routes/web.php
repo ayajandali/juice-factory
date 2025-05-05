@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])
         ->name('notifications');
 
+    Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
+         ->name('employee.leave-request');
+
 
     
 });
@@ -52,9 +55,6 @@ Route::middleware(['auth', 'checkrole:super-employee'])->group(function(){
 
     Route::get('super-employee/dashboard', [SuperEmployeeController::class, 'index'])
         ->name('super-employee.dashboard');
-
-    Route::post('/super-employee/leave-request', [LeaveRequestController::class, 'store'])
-        ->name('super-employee.leave-request');
 
     Route::get('/super-employee', [DailyWorkStatusController::class, 'index'])
         ->name('super-employee.index');
@@ -69,8 +69,6 @@ Route::middleware(['auth', 'checkrole:Employee'])->group(function(){
     Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
          ->name('employee.dashboard');
 
-    Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
-         ->name('employee.leave-request');
 });
 
 Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
@@ -118,6 +116,7 @@ Route::middleware(['auth', 'checkrole:Accountant'])->group(function(){
     
     Route::delete('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'destroy'])
         ->name('export.destroy.invoice');
+
 
 });
 

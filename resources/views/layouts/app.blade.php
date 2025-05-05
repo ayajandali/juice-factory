@@ -14,11 +14,13 @@
 
 
 
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!-- Litepicker CSS -->
         <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet">
+        
 
         <!-- Litepicker JS -->
         <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
@@ -45,24 +47,6 @@
                 {{ $slot }}
             </main>
         </div>
-
-        <!-- calender -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-        <script>
-            flatpickr("#calendar-container", {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                minDate: "today",
-                inline: true,
-                static: true,  // يخلي التقويم ثابت على الصفحة
-                theme: "material_blue", // اختيار قالب لوني جمالي
-                onChange: function(selectedDates, dateStr, instance) {
-                    document.getElementById('date_range').value = dateStr;
-                }
-            });
-        </script>
-        
 
 
     </body>

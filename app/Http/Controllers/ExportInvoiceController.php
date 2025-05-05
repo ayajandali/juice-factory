@@ -54,7 +54,7 @@ class ExportInvoiceController extends Controller
      */
     public function show()
     {
-        $invoices = ExportInvoice::all();
+        $invoices = ExportInvoice::latest()->paginate(10);
         return view('accountant.export_list' , compact('invoices'));
     }
 

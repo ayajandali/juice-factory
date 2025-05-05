@@ -5,15 +5,15 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <!-- Daily Work Status Form -->
            @include('dashboards.partials.work-status-form')
+        </div> 
 
+        <div>
             <!-- Leave Request Form -->
             @include('dashboards.partials.leave-request-form')
             
         </div>
-    </div>
 </x-app-layout>
