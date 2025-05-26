@@ -11,20 +11,15 @@ use App\Http\Controllers\HrleaveRequestController;
 use App\Http\Controllers\AccountantController;
 use App\Http\Controllers\ExportInvoiceController;
 use App\Http\Controllers\ImportInvoiceController;
-<<<<<<< HEAD
 use App\Http\Controllers\Managercontroller;
 use App\Http\Controllers\RegisteredMachineController;
 use App\Http\Controllers\ManagerDailyWorkStatus;
-=======
 use App\Http\Controllers\NotificationController;
->>>>>>> 6fa58c267ed5a8b0464ee82e55ff1bd34601c950
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-
-
 
 Route::get('/juice', function () {
     return view('juice.home');
@@ -42,18 +37,6 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
         ->name('requests');
-<<<<<<< HEAD
-=======
-
-    Route::get('/notifications', [NotificationController::class, 'index'])
-        ->name('notifications');
-
-    Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
-         ->name('employee.leave-request');
-
-
-    
->>>>>>> 6fa58c267ed5a8b0464ee82e55ff1bd34601c950
 });
 
 Route::middleware(['auth', 'checkrole:super-employee'])->group(function() {
@@ -65,8 +48,7 @@ Route::middleware(['auth', 'checkrole:super-employee'])->group(function() {
 
     Route::post('/super-employee', [DailyWorkStatusController::class, 'store'])
         ->name('super-employee.store');
-<<<<<<< HEAD
-=======
+
 
 });
 
@@ -75,7 +57,6 @@ Route::middleware(['auth', 'checkrole:Employee'])->group(function(){
     Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
          ->name('employee.dashboard');
 
->>>>>>> 6fa58c267ed5a8b0464ee82e55ff1bd34601c950
 });
 
 Route::middleware(['auth'])->group(function() {
@@ -103,14 +84,8 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
             ->name('accountant.import.store');
 
-<<<<<<< HEAD
         Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
             ->name('import.all.invoice');
-=======
-
-    Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
-        ->name('import.all.invoice');
->>>>>>> 6fa58c267ed5a8b0464ee82e55ff1bd34601c950
 
         Route::get('/accountant/import/allInvoice/{id}/edit', [ImportInvoiceController::class, 'edit'])
             ->name('import.edit.invoice');
@@ -124,7 +99,6 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
             ->name('export.all.invoice');
 
-<<<<<<< HEAD
         Route::get('/accountant/export/allInvoice/{id}/edit', [ExportInvoiceController::class, 'edit'])
             ->name('export.edit.invoice');
         
@@ -134,15 +108,6 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'destroy'])
             ->name('export.destroy.invoice');
     });
-=======
-        
-
-    Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
-        ->name('export.all.invoice');
-
-    Route::get('/accountant/export/allInvoice/{id}/edit', [ExportInvoiceController::class, 'edit'])
-        ->name('export.edit.invoice');
->>>>>>> 6fa58c267ed5a8b0464ee82e55ff1bd34601c950
     
     // HR Routes
     Route::middleware(['auth', 'checkrole:HR'])->group(function() {
@@ -187,7 +152,6 @@ Route::middleware(['auth'])->group(function() {
             ->name('hr.leave_requests.reject');
     });
 
-<<<<<<< HEAD
      // Manager Routes
      Route::middleware(['auth', 'checkrole:Manager'])->group(function() {
         //عرض داش بورد المدير 
@@ -226,50 +190,5 @@ Route::middleware(['auth'])->group(function() {
     });
 });
 
-require __DIR__ . '/auth.php';
-=======
-
-});
-
-Route::middleware(['auth','checkrole::HR'])->group(function(){
-// عرض داش بورد ال hr
-    Route::get('/hr/dashboard', [HrController::class, 'index'])
-    ->name('hr.dashboard');
-    //عرض جميع الموظفين الموجودين في المعمل 
-    Route::get('/hr/employees',[RegisteredEmployeeController::class,'index'])
-    ->name('hr.employees.index');
-   //انشاء سجل موظف لموظف جديد 
-    Route::get('/hr/employees/create',[RegisteredEmployeeController::class,'create'])
-    ->name('hr.employees.create');
-   //حفظ الموظف الجديد
-    Route::post('/hr/employees/',[RegisteredEmployeeController::class,'store'])
-    ->name('hr.employees.store');
-    // عرض فورم الموظف للتعديل 
-    Route::get('/hr/employees/{employee}/edit', [RegisteredEmployeeController::class, 'edit'])
-    ->name('hr.employees.edit');
-    //تعديل بيانات الموظف 
-    Route::put('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'update'])
-    ->name('hr.employees.update');
-    // حذف الموظف
-    Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
-        ->name('hr.employees.destroy');
-     //عرض طلبات الاجازة 
-     Route::get('/hr/leaverequest',[HrleaveRequestController::class,'index'])
-     ->name('hr.leaverequest.index'); 
-     //الموافقة على طلب الاجازة 
-     Route::patch('/hr/leave-requests/{id}/approve', [HRLeaveRequestController::class, 'approve'])
-     ->name('hr.leave_requests.approve');
-     // رفض طلب الاجازة 
-     Route::patch('/hr/leaverequests/{id}/reject', [HRLeaveRequestController::class, 'reject'])
-     ->name('hr.leave_requests.reject'); 
-
-});
-
-
-
-
-
-
-
 require __DIR__.'/auth.php';
->>>>>>> 6fa58c267ed5a8b0464ee82e55ff1bd34601c950
+
