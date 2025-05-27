@@ -37,6 +37,9 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/dashboards/requests', [LeaveRequestController::class, 'index'])
         ->name('requests');
+
+    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+
 });
 
 Route::middleware(['auth', 'checkrole:super-employee'])->group(function() {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\LeaveRequest;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,7 @@ class HrleaveRequestController extends Controller
         'message' => 'Your leave request has been accepted',
     ]);
 
-    return back()->with('success', 'تم قبول الطلب.');
+    return back()->with('success', 'Your leave request has been accepted');
 }
 
 public function reject($id)

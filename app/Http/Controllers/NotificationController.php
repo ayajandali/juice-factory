@@ -11,8 +11,18 @@ class NotificationController extends Controller
     {
         $notifications = Notification::where('user_id', auth()->id())->latest()->get();
 
-        Notification::where('user_id', auth()->id())->update(['is_read' => true]);
+        //Notification::where('user_id', auth()->id())->update(['is_read' => true]);
 
         return view('notifications.index', compact('notifications'));
     }
+
+    public function markAsRead()
+    {
+        Notification::where('user_id', auth()->id())
+                    ->where('is_read', false)
+                    ->update(['is_read' => true]);
+
+        return response()->json(['success' => true]);
+    }
+
 }

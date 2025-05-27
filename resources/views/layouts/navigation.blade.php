@@ -48,7 +48,7 @@
             <div class="flex items-center space-x-4">
                 <!-- Notification Dropdown -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="relative flex items-center text-gray-600 hover:text-gray-800 focus:outline-none">
+                        <button @click="open = !open; if(open) markAsRead()" class="relative flex items-center text-gray-600 hover:text-gray-800 focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -94,6 +94,25 @@
                         </div>
                     </div>
                 </div>
+
+             <script>
+                function markAsRead() {
+                    fetch("{{ route('notifications.read') }}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({})
+                    }).then(response => response.json())
+                    .then(data => {
+                        // Optionally remove the red badge
+                        const badge = document.querySelector("span.bg-red-600");
+                        if (badge) badge.remove();
+                    });
+                }
+            </script>
+
 
                 <!-- User Dropdown -->
                 <x-dropdown align="right" width="48">
