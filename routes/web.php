@@ -134,28 +134,35 @@ Route::middleware(['auth'])->group(function() {
             ->name('hr.employees.store');
         
         // عرض فورم الموظف للتعديل
-        Route::get('/hr/employees/{employee}/edit', [RegisteredEmployeeController::class, 'edit'])
-            ->name('hr.employees.edit');
+       // Route::get('/hr/employees/{employee}/edit', [RegisteredEmployeeController::class, 'edit'])
+           // ->name('hr.employees.edit');
         
         // تعديل بيانات الموظف
-        Route::put('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'update'])
-            ->name('hr.employees.update');
+        //Route::put('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'update'])
+           // ->name('hr.employees.update');
         
         // حذف الموظف
-        Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
-            ->name('hr.employees.destroy');
+        //Route::delete('/hr/employees/{employee}', [RegisteredEmployeeController::class, 'destroy'])
+           // ->name('hr.employees.destroy');
         
         // عرض طلبات الاجازة
-        Route::get('/hr/leaverequest', [HrleaveRequestController::class, 'index'])
+        Route::get('/hr/leaverequest/all', [HrleaveRequestController::class, 'index'])
             ->name('hr.leaverequest.index');
         
         // الموافقة على طلب الاجازة
-        Route::patch('/hr/leave-requests/{id}/approve', [HRLeaveRequestController::class, 'approve'])
-            ->name('hr.leave_requests.approve');
+        Route::post('/hr/leave-requests/{id}/approve', [HRLeaveRequestController::class, 'approve'])
+            ->name('hr.leaverequest.approve');
         
         // رفض طلب الاجازة
-        Route::patch('/hr/leaverequests/{id}/reject', [HRLeaveRequestController::class, 'reject'])
-            ->name('hr.leave_requests.reject');
+        Route::post('/hr/leaverequests/{id}/reject', [HRLeaveRequestController::class, 'reject'])
+            ->name('hr.leaverequest.reject');
+
+
+        Route::get('/hr/leaverequest/approved', [HrleaveRequestController::class, 'approvedRequests'])
+            ->name('hr.leaverequest.approvedRequests');
+        
+        Route::get('/hr/leaverequest/rejected', [HrleaveRequestController::class, 'rejectedRequests'])
+            ->name('hr.leaverequest.rejectedRequests');
     });
 
      // Manager Routes
