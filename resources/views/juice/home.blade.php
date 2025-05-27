@@ -1,68 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>Juice Factory</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>واجهة المعمل - Tailwind</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="logo">
-                <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Logo"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+    <header class="bg-blue-700 text-white text-center p-10 animate_animated animate_fadeInDown">
+        <h1 class="text-4xl font-bold mb-2">مرحبا بكم في واجهة المعمل</h1>
+        <p class="text-lg">أفضل منتجات وخدمات بجودة عالية</p>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Welcome to Juice Factory</h1>
-            <p>Fresh & Natural Juice Delivered to Your Doorstep</p>
-            <a href="#products" class="btn">Shop Now</a>
-        </div>
+    <section class="max-w-5xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg animate_animated animate_fadeInLeft">
+        <h2 class="text-3xl font-semibold text-blue-700 mb-4">نبذة عنا</h2>
+        <p class="text-gray-700 leading-relaxed">
+            نحن معمل متخصص في تقديم أفضل المنتجات الصناعية والخدمات المميزة لعملائنا.
+        </p>
     </section>
 
-    <!-- Products Section -->
-    <section id="products" class="products">
-        <div class="container">
-            <h2>Our Juices</h2>
-            <div class="product-grid">
-                <!-- Example product -->
-                <div class="product-card">
-                    <img src="{{ asset('images/juice1.jpg') }}" alt="Juice 1">
-                    <h3>Orange Juice</h3>
-                    <p>$4.99</p>
-                    <a href="#" class="btn">Add to Cart</a>
+    <section class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg animate_animated animate_fadeInRight">
+        <h2 class="text-3xl font-semibold text-blue-700 mb-4">من نحن</h2>
+        <p class="text-gray-700 leading-relaxed">
+            فريقنا ملتزم بالابتكار والجودة، ويعمل بشغف لتلبية احتياجات السوق.
+        </p>
+    </section>
+
+    <section class="max-w-7xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg animate_animated animate_fadeInUp">
+        <h2 class="text-3xl font-semibold text-blue-700 mb-6">منتجاتنا</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            @foreach($products as $product)
+                <div class="border border-gray-300 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300 animate_animated animate_zoomIn">
+                    <h3 class="text-xl font-bold mb-2 text-blue-800">{{ $product->product_name }}</h3>
+                    <p class="text-gray-600 mb-3">{{ $product->description }}</p>
                 </div>
-                <!-- Repeat for more products -->
-            </div>
+            @endforeach
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Juice Factory. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- JS -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 </html>

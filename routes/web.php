@@ -15,6 +15,7 @@ use App\Http\Controllers\Managercontroller;
 use App\Http\Controllers\RegisteredMachineController;
 use App\Http\Controllers\ManagerDailyWorkStatus;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
@@ -24,6 +25,8 @@ Route::get('/', function () {
 Route::get('/juice', function () {
     return view('juice.home');
 });
+
+
 
 
 Route::get('/dashboard', function () {
@@ -186,6 +189,28 @@ Route::middleware(['auth'])->group(function() {
         // حذف الالة 
         Route::delete('/manager/machine/{machine}', [RegisteredMachineController::class, 'destroy'])
             ->name('manager.machine.destroy');
+         //عرض جميع المنتجات في المعمل    
+          Route::get('/Manager/product', [ProductController::class, 'index'])
+        ->name('manager.product.index');    
+        //اضافة منتج 
+        Route::get('/manager/product/create', [ProductController::class, 'create'])
+            ->name('manager.product.create');
+        
+        //حفظ المنتج
+        Route::post('/manager/product/', [ProductController::class, 'store'])
+            ->name('manager.machine.store');
+        
+        //عرض فورم تعديل منتج ما 
+        Route::get('/manager/product/{product}/edit', [ProductController::class, 'edit'])
+            ->name('manager.machine.edit');
+        
+        //حفظ تعديل منتج ما 
+        Route::put('/manager/product/{product}', [ProductController::class, 'update'])
+            ->name('manager.product.update');
+        
+        // حذف المنتج 
+        Route::delete('/manager/product/{product}', [ProductController::class, 'destroy'])
+            ->name('manager.product.destroy');
         
     });
 });

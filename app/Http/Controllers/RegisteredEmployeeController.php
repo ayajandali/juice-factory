@@ -46,7 +46,7 @@ class RegisteredEmployeeController extends Controller
          'phone'=>'required|string|unique:user,phone',
          'address'=>'required|string',
          'salary'=>'required|numeric',
-         'machine_id'=>'required'
+         'machine_id'=>'nullable|integer'
         ]);
         $exists = User::where('first_name', $request->first_name)
         ->where('last_name', $request->last_name)
@@ -60,7 +60,9 @@ class RegisteredEmployeeController extends Controller
         return back()->withErrors(['error' => 'This Employee already exists'])->withInput();
     }
     $requestData = $request->all();
-    $requestData['password'] = Hash::make($request->password);  // تشفير كلمة المرور
+    $requestData['password'] = Hash::make($request->password);
+    // تشفير كلمة المرور
+    $requestData['machine_id']=$request->machine_id?:null; 
         $employee=User::create($requestData);
         return redirect()->route('hr.employees.index')->with('success','Employee added successfully');
     }
@@ -90,14 +92,14 @@ class RegisteredEmployeeController extends Controller
             'first_name'=>'required|string|max:255',
             'last_name'=>'required|string|max:255',
             'email' => 'required|email|unique:user,email,' . $id,
-            'password'=>'nullabel|string',
+            'password'=>'nullable|string',
             'birth_date'=>'required|date',
             'gender'=>'required|in:male,female',
             'role'=>'required|in:HR,Manager,Employee,Accountant,super-employee',
             'phone' => 'required|string|unique:user,phone,' . $id,
             'address'=>'required|string',
             'salary'=>'required|numeric',
-            'machine_id'=>'required'
+            'machine_id'=>'nullable'
            ]);
            $employee = User::findOrFail($id);
 
@@ -110,7 +112,7 @@ class RegisteredEmployeeController extends Controller
            $employee->salary = $request->salary;
            $employee->address = $request->address;
            $employee->gender = $request->gender;
-           $employee->machine_id = $request->machine_id;
+           $employee->machine_id =$request->machine_id?:null;
            $employee->save();
            return redirect()->route('hr.employees.index')->with('success','Employee updated successfully');
     }

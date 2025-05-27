@@ -33,5 +33,10 @@
                 عرض جدول الأعمال اليومية
             </a>
         </div>
+         <div>
+            <a href="{{ route('manager.product.index') }}" class="inline-block border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-50">
+                عرض كل المنتجات في المعمل 
+            </a>
+        </div>
     </div>
 </x-app-layout>
