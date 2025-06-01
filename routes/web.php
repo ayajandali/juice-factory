@@ -176,12 +176,16 @@ Route::middleware(['auth'])->group(function() {
         //عرض داش بورد المدير 
         Route::get('/Manager/dashboard', [ManagerController::class, 'index'])
             ->name('manager.dashboard');
+
         // عرض جميع احوال المعمل اليومية 
         Route::get('/Manager/DailyWorkStatus', [ManagerDailyWorkStatus::class, 'index'])
             ->name('manager.dailyworkstatus.index');
+
         // عرض جميع الموظفين الموجودين في المعمل
         Route::get('/Manager/employees', [RegisteredEmployeeController::class, 'index'])
             ->name('manager.employees.index');
+
+
         
         // عرض جميع الالات في المعمل 
         Route::get('/Manager/machine', [RegisteredMachineController::class, 'index'])
@@ -191,7 +195,7 @@ Route::middleware(['auth'])->group(function() {
             ->name('manager.machine.create');
         
         // حفظ الالة 
-        Route::post('/manager/machine/', [RegisteredMachineController::class, 'store'])
+        Route::post('/manager/machine/store', [RegisteredMachineController::class, 'store'])
             ->name('manager.machine.store');
         
         //عرض فورم التعديل  لالة ما 
@@ -205,6 +209,11 @@ Route::middleware(['auth'])->group(function() {
         // حذف الالة 
         Route::delete('/manager/machine/{machine}', [RegisteredMachineController::class, 'destroy'])
             ->name('manager.machine.destroy');
+
+        Route::post('/manager/machine/maintenance' , [RegisteredMachineController::class, 'maintenance'])
+            ->name('manager.machine.maintenance');
+
+
          //عرض جميع المنتجات في المعمل    
           Route::get('/Manager/product', [ProductController::class, 'index'])
         ->name('manager.product.index');    
@@ -214,11 +223,11 @@ Route::middleware(['auth'])->group(function() {
         
         //حفظ المنتج
         Route::post('/manager/product/', [ProductController::class, 'store'])
-            ->name('manager.machine.store');
+            ->name('manager.product.store');
         
         //عرض فورم تعديل منتج ما 
         Route::get('/manager/product/{product}/edit', [ProductController::class, 'edit'])
-            ->name('manager.machine.edit');
+            ->name('manager.product.edit');
         
         //حفظ تعديل منتج ما 
         Route::put('/manager/product/{product}', [ProductController::class, 'update'])
@@ -227,6 +236,12 @@ Route::middleware(['auth'])->group(function() {
         // حذف المنتج 
         Route::delete('/manager/product/{product}', [ProductController::class, 'destroy'])
             ->name('manager.product.destroy');
+
+        Route::get('/manager/product/available', [ProductController::class, 'available'])
+            ->name('manager.product.available');
+
+        Route::get('/manager/rawMaterials/available', [ProductController::class, 'rawMaterial'])
+            ->name('manager.rawmaterials.available');
         
     });
 });

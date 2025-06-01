@@ -10,7 +10,7 @@ class User extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'user';  // تأكدي أن هذا هو اسم جدول المستخدمين الصحيح
+    protected $table = 'user';  
 
     protected $fillable = [
         'first_name','last_name', 'email', 'password', 'birth_date', 'gender', 'role',

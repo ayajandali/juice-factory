@@ -40,7 +40,7 @@ class RegisteredMachineController extends Controller
     
         Machine::create($validated);
     
-        return redirect()->route('manager.machine.index')->with('success', 'تمت إضافة الآلة بنجاح');
+        return redirect()->route('manager.machine.index')->with('success', 'Machine added successfuly');
     
     }
 
@@ -91,5 +91,15 @@ class RegisteredMachineController extends Controller
         $machine->delete();
         return redirect()-> route('manager.machine.index')
         ->with('success','Machine deleted successfully');
+    }
+
+    public function maintenance()
+    {
+
+    }
+
+    public function available()
+    {
+
     }
 }
