@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Machine;
 
 
 class RegisteredEmployeeController extends Controller
@@ -26,7 +27,8 @@ class RegisteredEmployeeController extends Controller
         {
             abort(403);
         }
-        return view('dashboards.partials.add-employee-form');
+        $machines = Machine::all();
+        return view('dashboards.partials.add-employee-form' , compact('machines'));
     }
 
     /**
@@ -79,9 +81,10 @@ class RegisteredEmployeeController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(User $employee)
-    {
-        return view('dashboards.partials.edit-employee-form',compact('employee'));
-    }
+{
+    $machines = Machine::all(); // جلب كل الماكينات من قاعدة البيانات
+    return view('dashboards.partials.edit-employee-form', compact('employee', 'machines'));
+}
 
     /**
      */

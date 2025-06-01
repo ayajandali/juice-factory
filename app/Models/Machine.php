@@ -14,4 +14,10 @@ class Machine extends Model
         'status',
         'last_maintenance_date',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'machine_id');
+    }
+
 }

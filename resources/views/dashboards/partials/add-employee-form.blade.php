@@ -76,10 +76,15 @@
                 </select>
             </div>
 
-            <!-- Machine ID -->
+            <!-- Machine -->
             <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700">Machine ID</label>
-                <input type="text" name="machine_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                <label class="block text-sm font-medium text-gray-700">Machine</label>
+                <select name="machine_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <option value="">Select a machine</option>
+                    @foreach($machines as $machine)
+                        <option value="{{ $machine->id }}">{{ $machine->name }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Add Employee</button>
