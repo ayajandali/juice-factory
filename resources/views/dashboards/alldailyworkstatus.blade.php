@@ -1,40 +1,42 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold text-gray-800">جدول الأعمال اليومية</h2>
+        <h2 class="text-xl font-semibold text-blue-900">Daily Work Schedule</h2>
     </x-slot>
 
-    <div class="p-6 bg-white rounded shadow">
+    <div class="p-6 bg-white rounded-lg shadow-md">
         @if($dailyworkstatus->isEmpty())
-            <p class="text-gray-600">لا توجد أعمال يومية لعرضها حالياً.</p>
+            <p class="text-gray-600">No daily work records available at the moment.</p>
         @else
-            <table class="min-w-full table-auto border-collapse border border-gray-300 text-center">
-                <thead class="bg-gray-100 text-gray-700">
-                    <tr>
-                        <th class="border border-gray-300 px-4 py-2">اسم الموظف</th>
-                        <th class="border border-gray-300 px-4 py-2">التاريخ</th>
-                        <th class="border border-gray-300 px-4 py-2">الوصف</th>
-                        <th class="border border-gray-300 px-4 py-2">الحالة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($dailyworkstatus as $status)
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto border-collapse border border-blue-300 text-center rounded-lg overflow-hidden">
+                    <thead class="bg-blue-50 text-blue-900">
                         <tr>
-                            <td class="border border-gray-300 px-4 py-2">
-                                {{ $status->employee->first_name ?? 'غير معروف' }}
-                            </td>
-                            <td class="border border-gray-300 px-4 py-2">
-                                {{ \Carbon\Carbon::parse($status->date)->format('Y-m-d') }}
-                            </td>
-                            <td class="border border-gray-300 px-4 py-2">
-                                {{ $status->notes }}
-                            </td>
-                            <td class="border border-gray-300 px-4 py-2">
-                                {{ $status->work_status }}
-                            </td>
+                            <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Employee Name</th>
+                            <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Date</th>
+                            <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Description</th>
+                            <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Status</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="text-blue-800">
+                        @foreach($dailyworkstatus as $status)
+                            <tr class="hover:bg-blue-50">
+                                <td class="border border-blue-300 px-4 py-2 text-sm">
+                                    {{ $status->employee->first_name ?? 'Unknown' }}
+                                </td>
+                                <td class="border border-blue-300 px-4 py-2 text-sm">
+                                    {{ \Carbon\Carbon::parse($status->date)->format('Y-m-d') }}
+                                </td>
+                                <td class="border border-blue-300 px-4 py-2 text-sm">
+                                    {{ $status->notes }}
+                                </td>
+                                <td class="border border-blue-300 px-4 py-2 text-sm font-medium">
+                                    {{ ucfirst($status->work_status) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @endif
     </div>
 </x-app-layout>

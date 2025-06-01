@@ -10,10 +10,14 @@ class RegisteredMachineController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $machines=Machine::latest()->paginate(10);
-        return view('dashboards.allmachine',compact('machines'));
-    }
+{
+    $activeMachines = Machine::where('status', 'active')->get();
+    $inactiveMachines = Machine::where('status', 'inactive')->get();
+    $underMaintenanceMachines = Machine::where('status', 'under_maintenance')->get();
+
+    return view('dashboards.allmachine', compact('activeMachines', 'inactiveMachines', 'underMaintenanceMachines'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -68,7 +72,7 @@ class RegisteredMachineController extends Controller
         // تحقق من صحة البيانات
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'required|in:active,inactive,maintenance',
+            'status' => 'required|in:active,inactive,under_maintenance',
             'last_maintenance_date' => 'nullable|date',
         ]);
     

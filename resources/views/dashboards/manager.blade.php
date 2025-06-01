@@ -31,25 +31,23 @@
                        class="inline-block w-full text-center bg-green-100 text-green-800 py-2 rounded-lg hover:bg-green-200 transition">
                         Show All
                     </a>
-                    <a href="{{ route('manager.machine.maintenance') }}"
-                       class="inline-block w-full text-center bg-green-100 text-green-800 py-2 rounded-lg hover:bg-green-200 transition">
-                        Machine Maintenance
-                    </a>
+                    
                 </div>
             </div>
 
             {{-- Products Card --}}
             <div class="bg-white border border-yellow-200 rounded-2xl shadow p-6 hover:shadow-lg transition">
-                <h3 class="text-lg font-semibold text-yellow-700 mb-1">Products</h3>
+                <h3 class="text-lg font-semibold text-yellow-700 mb-1">Products and Materials</h3>
                 <p class="text-3xl font-bold text-yellow-900 mb-4">{{ $product_count ?? '--' }}</p>
                 <div class="space-y-2">
-                    <a href="{{ route('manager.product.index') }}"
-                       class="inline-block w-full text-center bg-yellow-600 text-white py-2 rounded-lg hover:bg-yellow-700 transition">
-                        Show All Products
-                    </a>
                     <a href="{{ route('manager.product.create') }}"
-                       class="inline-block w-full text-center bg-yellow-100 text-yellow-800 py-2 rounded-lg hover:bg-yellow-200 transition">
+                       class="inline-block w-full text-center bg-yellow-600 text-white py-2 rounded-lg hover:bg-yellow-700 transition">
                         Add New Product 
+                    </a>
+                    
+                    <a href="{{ route('manager.product.index') }}"
+                       class="inline-block w-full text-center bg-yellow-100 text-yellow-800 py-2 rounded-lg hover:bg-yellow-200 transition">
+                        Show All Products
                     </a>
                     <a href="{{ route('manager.product.available') }}"
                        class="inline-block w-full text-center bg-yellow-100 text-yellow-800 py-2 rounded-lg hover:bg-yellow-200 transition">

@@ -1,36 +1,49 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold text-gray-800">تعديل معلومات الآلة</h2>
+        <h2 class="text-2xl font-semibold text-blue-900">Edit Machine Information</h2>
     </x-slot>
 
-    <div class="p-6 bg-white rounded shadow">
-        <form action="{{ route('manager.machine.update', $machine->id) }}" method="POST">
+    <div class="p-6 bg-white rounded-xl shadow max-w-2xl mx-auto mt-6">
+        <form action="{{ route('manager.machine.update', $machine->id) }}" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
 
-            <!-- اسم الآلة -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">اسم الآلة</label>
-                <input type="text" name="name" value="{{ old('name', $machine->name) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+            <!-- Machine Name -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-blue-900 mb-1">Machine Name</label>
+                <input type="text" name="name" id="name"
+                       value="{{ old('name', $machine->name) }}"
+                       required
+                       class="w-full border border-blue-300 rounded-md shadow-sm focus:ring-blue-800 focus:border-blue-800 px-3 py-2">
             </div>
 
-            <!-- حالة الآلة -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">حالة الآلة</label>
-                <select name="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                    <option value="active" {{ $machine->status === 'active' ? 'selected' : '' }}>فعالة</option>
-                    <option value="inactive" {{ $machine->status === 'inactive' ? 'selected' : '' }}>غير فعالة</option>
-                    <option value="maintenance" {{ $machine->status === 'maintenance' ? 'selected' : '' }}>تحت الصيانة</option>
+            <!-- Machine Status -->
+            <div>
+                <label for="status" class="block text-sm font-medium text-blue-900 mb-1">Machine Status</label>
+                <select name="status" id="status" required
+                        class="w-full border border-blue-300 rounded-md shadow-sm focus:ring-blue-800 focus:border-blue-800 px-3 py-2">
+                    <option value="active" {{ $machine->status === 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="inactive" {{ $machine->status === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                    <option value="under_maintenance" {{ $machine->status === 'under_maintenance' ? 'selected' : '' }}>Under Maintenance</option>
                 </select>
             </div>
 
-            <!-- آخر تاريخ صيانة -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">آخر تاريخ صيانة</label>
-                <input type="date" name="last_maintenance_date" value="{{ old('last_maintenance_date', $machine->last_maintenance_date ? $machine->last_maintenance_date->format('Y-m-d') : '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <!-- Last Maintenance Date -->
+            <div>
+                <label for="last_maintenance_date" class="block text-sm font-medium text-blue-900 mb-1">Last Maintenance Date</label>
+                <input type="date" name="last_maintenance_date" id="last_maintenance_date"
+                       value="{{ old('last_maintenance_date', $machine->last_maintenance_date ? \Carbon\Carbon::parse($machine->last_maintenance_date)->format('Y-m-d') : '') }}"
+                       class="w-full border border-blue-300 rounded-md shadow-sm focus:ring-blue-800 focus:border-blue-800 px-3 py-2">
+                <p class="text-xs text-blue-700 mt-1">Leave blank if no maintenance has been performed yet.</p>
             </div>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">تحديث</button>
+            <!-- Submit Button -->
+            <div class="pt-4">
+                <button type="submit"
+                        class="bg-blue-900 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition">
+                    Update Machine
+                </button>
+            </div>
         </form>
     </div>
 </x-app-layout>
