@@ -5,27 +5,11 @@
     <form method="POST" action="{{ route('super-employee.store') }}">
         @csrf
 
-        <!-- Work Status -->
-        <div class="mb-4">
-            <label for="work_status" class="block text-sm font-medium text-gray-700 mb-1">Work Status</label>
-            <select id="work_status" name="work_status" class="w-full border border-gray-300 rounded-xl shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
-                <option value="">-- Select Work Status --</option>
-                <option value="Completed">Completed</option>
-                <option value="Pending">Pending</option>
-                <option value="Delayed">Delayed</option>
-            </select>
-        </div>
 
         <!-- Notes -->
         <div class="mb-4">
             <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
             <textarea id="notes" name="notes" rows="3" class="w-full border border-gray-300 rounded-xl shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
-        </div>
-
-        <!-- Date -->
-        <div class="mb-4">
-            <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-            <input type="text" id="daily_date" name="date" class="w-full border border-gray-300 rounded-xl shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
         </div>
 
         <!-- Submit Button -->
@@ -49,13 +33,4 @@
     </form>
 </div>
 
-
-<script>
-    const picker2 = new Litepicker({
-        element: document.getElementById('daily_date'),
-        singleMode: true, // يحدد أنه اختيار يوم واحد فقط
-        format: 'YYYY-MM-DD',
-        maxDate: new Date(), // يمنع اختيار تاريخ بالمستقبل (اختياري)
-    });
-</script>
 

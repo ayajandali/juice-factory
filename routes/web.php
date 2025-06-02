@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
         ->name('requests');
 
     Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
+            ->name('employee.leave-request');
 
 });
 
@@ -70,8 +72,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/employee/dashboards' , [EmployeeController::class, 'index'])
             ->name('employee.dashboard');
 
-        Route::post('/employee/leave-request', [LeaveRequestController::class, 'store'])
-            ->name('employee.leave-request');
+        
     });
 
     Route::middleware(['auth', 'checkrole:Accountant'])->group(function() {
@@ -109,7 +110,7 @@ Route::middleware(['auth'])->group(function() {
             ->name('export.edit.invoice');
         
         Route::put('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'update'])
-->name('export.update.invoice');
+            ->name('export.update.invoice');
         
         Route::delete('/accountant/export/allInvoice/{id}', [ExportInvoiceController::class, 'destroy'])
             ->name('export.destroy.invoice');
