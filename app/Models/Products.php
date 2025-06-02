@@ -6,16 +6,23 @@ class Products extends Model
     protected $fillable = [
         'product_name', 
         'description',
-        'production_date',
-        'expiry_date',
-        'quantity',
         'machine_id',
         'image',
         'size',
     ];
 
-  public function machine()
+    public function machine()
     {
         return $this->belongsTo(Machine::class, 'machine_id');
+    }
+
+    public function dailyWorkProducts()
+    {
+        return $this->hasMany(DailyWorkProduct::class);
+    }
+
+    public function availableProduct()
+    {
+        return $this->hasOne(AvailableProduct::class);
     }
 }

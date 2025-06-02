@@ -11,11 +11,22 @@ class DailyWorkStatus extends Model
     protected $table = 'daily_work_statuses';
     public $timestamps = false;
 
-    protected $fillable = [
-        'user_id',
-        'work_status',
-        'notes',
-        'date',
-    ];
+    protected $fillable = ['user_id' , 'notes'];
+
+    public function rawMaterials()
+    {
+        return $this->hasMany(DailyWorkRawMaterial::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(DailyWorkProduct::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     
 }

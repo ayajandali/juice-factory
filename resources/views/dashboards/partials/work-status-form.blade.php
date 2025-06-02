@@ -1,36 +1,103 @@
-<!-- Daily Work Status Form -->
-<div class="bg-white shadow-md rounded-lg p-8 max-w-3xl mx-auto my-10">
-    <h2 class="text-xl font-semibold text-[#011491] mb-4">Daily Work Status</h2>
-
-    <form method="POST" action="{{ route('super-employee.store') }}">
-        @csrf
 
 
-        <!-- Notes -->
-        <div class="mb-4">
-            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-            <textarea id="notes" name="notes" rows="3" class="w-full border border-gray-300 rounded-xl shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
-        </div>
+<script>
+    const rawMaterials = @json($rawMaterials);
+    const products = @json($products);
+</script>
 
-        <!-- Submit Button -->
-        <div class="mt-4">
-            <x-primary-button class="bg-[#2a3a9f] hover:bg-[#4856a3] focus:ring-blue-300">
-                Submit Status
-            </x-primary-button>
-        </div>
 
-        <!-- Success Message -->
-        @if (session('success'))
-            <div class="mt-4 p-3 text-green-700 bg-green-100 border border-green-300 rounded-md">
-                {{ session('success') }}
+<form method="POST" action="{{ route('super-employee.store') }}">
+    @csrf
+
+
+    <!-- Raw Materials -->
+    <div class="mb-4">
+        <label>Raw Materials Used</label>
+        <div id="raw-materials-section">
+            <div class="flex gap-2 mb-2">
+                <select name="raw_materials[0][id]" class="form-select">
+                    @foreach ($rawMaterials as $material)
+                        <option value="{{ $material->id }}">{{ $material->name }} ({{ $material->quantity }} {{ $material->unit }})</option>
+                    @endforeach
+                </select>
+                <input type="number" name="raw_materials[0][quantity]" class="form-input" placeholder="Quantity used">
             </div>
-        @endif
+        </div>
+        <button type="button" onclick="addRawMaterial()">+ Add another</button>
+    </div>
 
-        <!-- Date Duplicate Error -->
-        @error('date_duplicate')
-            <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
-        @enderror
-    </form>
-</div>
+    <!-- Products Produced -->
+    <div class="mb-4">
+        <label>Products Produced</label>
+        <div id="products-section">
+            <div class="flex gap-2 mb-2">
+                <select name="products[0][id]" class="form-select">
+                    @foreach ($products as $product)
+                        <option value="{{ $product->id }}">{{ $product->name }}</option>
+                    @endforeach
+                </select>
+                <input type="number" name="products[0][quantity]" class="form-input" placeholder="Quantity produced">
+            </div>
+        </div>
+        <button type="button" onclick="addProduct()">+ Add another</button>
+    </div>
 
+     <!-- Notes -->
+    <div class="mb-4">
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" rows="3" class="form-input w-full"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <x-primary-button>Submit Status</x-primary-button>
+</form>
+
+@if (session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
+
+
+<script>
+let rawIndex = 1;
+let productIndex = 1;
+
+function addRawMaterial() {
+    const section = document.getElementById('raw-materials-section');
+    let options = '';
+    rawMaterials.forEach(material => {
+        options += `<option value="${material.id}">${material.name} (${material.quantity} ${material.unit})</option>`;
+    });
+
+    const newField = `
+        <div class="flex gap-2 mb-2">
+            <select name="raw_materials[${rawIndex}][id]" class="form-select">
+                ${options}
+            </select>
+            <input type="number" name="raw_materials[${rawIndex}][quantity]" class="form-input" placeholder="Quantity used">
+        </div>`;
+    section.insertAdjacentHTML('beforeend', newField);
+    rawIndex++;
+}
+
+
+function addProduct() {
+    const section = document.getElementById('products-section');
+    let options = '';
+    products.forEach(product => {
+        options += `<option value="${product.id}">${product.name}</option>`;
+    });
+
+    const newField = `
+        <div class="flex gap-2 mb-2">
+            <select name="products[${productIndex}][id]" class="form-select">
+                ${options}
+            </select>
+            <input type="number" name="products[${productIndex}][quantity]" class="form-input" placeholder="Quantity produced">
+        </div>`;
+    section.insertAdjacentHTML('beforeend', newField);
+    productIndex++;
+}
+
+</script>
 
