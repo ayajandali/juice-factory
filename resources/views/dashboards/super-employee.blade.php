@@ -11,10 +11,12 @@
 
     </x-slot>
 
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <!-- Daily Work Status Form -->
            @include('dashboards.partials.work-status-form')
+
         </div> 
 
         <div>

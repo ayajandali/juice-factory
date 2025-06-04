@@ -11,7 +11,7 @@ class DailyWorkStatus extends Model
     protected $table = 'daily_work_statuses';
     public $timestamps = false;
 
-    protected $fillable = ['user_id' , 'notes'];
+    protected $fillable = ['user_id' , 'notes' , 'date'];
 
     public function rawMaterials()
     {
