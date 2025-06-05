@@ -8,6 +8,12 @@
                 📊 Smart Invoice Pro
             </div>
         </div>
+         <!-- Litepicker CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"/>
+
+        <!-- Litepicker JS -->
+        <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+
     </x-slot>
 
     <div class="max-w-7xl mx-auto py-12 px-6 lg:px-8">
