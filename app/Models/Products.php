@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Models\availableProduct;
 use Illuminate\Database\Eloquent\Model;
 class Products extends Model
 {
@@ -25,4 +26,10 @@ class Products extends Model
     {
         return $this->hasOne(AvailableProduct::class);
     }
+
+    public function invoiceItems()
+    {
+        return $this->hasMany(ExportInvoiceItem::class);
+    }
+
 }

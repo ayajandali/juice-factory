@@ -13,10 +13,14 @@ class ExportInvoice extends Model
         'invoice_number',
         'date',
         'total_amount',
-        'tax',
         'description',
         'user_id',
     ];
 
+
+    public function items()
+    {
+        return $this->hasMany(ExportInvoiceItem::class, 'export_invoice_id');
+    }
 
 }

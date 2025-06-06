@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\ExportInvoice;
 use Illuminate\Http\Request;
+use App\Models\Products;
+use App\Models\AvailableProduct;
+
 
 class ExportInvoiceController extends Controller
 {
@@ -11,7 +14,8 @@ class ExportInvoiceController extends Controller
      */
     public function index()
     {
-        return view('accountant.export');
+        $products = AvailableProduct::with('products')->get();
+        return view('accountant.export' , compact('products'));
     }
 
     /**
@@ -27,27 +31,63 @@ class ExportInvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        // التحقق من البيانات المدخلة
         $request->validate([
-            'invoice_number' => 'required|string|max:255|unique:export_invoice',
+            'invoice_number' => 'required|string|max:255',
             'date' => 'required|date',
-            'total_amount' => 'required|numeric',
-            'tax' => 'nullable|numeric',
+            'total_amount' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'products' => 'required|array|min:1',
+            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
         ]);
 
-        // حفظ البيانات في قاعدة البيانات
+        // تحقق من توفر الكميات المطلوبة في جدول available_products
+        foreach ($request->products as $productData) {
+            $availableQuantity = \DB::table('available_products')
+                ->where('product_id', $productData['product_id'])
+                ->value('quantity'); 
+            if ($availableQuantity === null || $availableQuantity < $productData['quantity']) {
+                return redirect()->back()->withErrors("Quantity isn't available for {$productData['product_id']}");
+            }
+        }
+
+        // إذا الكميات متوفرة، ننشئ الفاتورة
         $invoice = ExportInvoice::create([
             'invoice_number' => $request->invoice_number,
             'date' => $request->date,
             'total_amount' => $request->total_amount,
-            'tax' => $request->tax ?? 0, // إذا كان tax فارغ نضع 0
             'description' => $request->description,
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('accountant.export')->with('status', 'Invoice recorded successfully!');
+        // تخزين كل منتج مع تحديث الكميات في available_products
+        foreach ($request->products as $productData) {
+            $price = \DB::table('products')->where('id', $productData['product_id'])->value('price');
+            $quantity = $productData['quantity'];
+            $subtotal = $price * $quantity;
+
+            $invoice->items()->create([
+                'product_id' => $productData['product_id'],
+                'quantity' => $quantity,
+                'price' => $price,
+                'subtotal' => $subtotal,
+            ]);
+
+            // تحديث كمية المنتج في جدول available_products
+            \DB::table('available_products')
+                ->where('product_id', $productData['product_id'])
+                ->decrement('quantity', $quantity);
+
+            // حذف السطر إذا الكمية أصبحت صفر أو أقل
+            \DB::table('available_products')
+                ->where('product_id', $productData['product_id'])
+                ->where('quantity', '<=', 0)
+                ->delete();
+        }
+
+        return redirect()->back()->with('status', 'Invoice created successfully!');
     }
+
 
     /**
      * Display the specified resource.

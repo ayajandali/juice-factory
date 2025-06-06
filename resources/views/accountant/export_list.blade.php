@@ -18,7 +18,6 @@
                         <th class="border px-4 py-2">Invoice #</th>
                         <th class="border px-4 py-2">Date</th>
                         <th class="border px-4 py-2">Total</th>
-                        <th class="border px-4 py-2">Tax</th>
                         <th class="border px-4 py-2">Description</th>
                         <th class="border px-4 py-2">Actions</th>
                     </tr>
@@ -29,7 +28,6 @@
                         <td class="border px-4 py-2">{{ $invoice->invoice_number }}</td>
                             <td class="border px-4 py-2">{{ $invoice->date }}</td>
                             <td class="border px-4 py-2">{{ $invoice->total_amount }}</td>
-                            <td class="border px-4 py-2">{{ $invoice->tax }}</td>
                             <td class="border px-4 py-2">{{ $invoice->description }}</td>
                             <td class="border px-4 py-2">
                                
