@@ -23,4 +23,9 @@ class ExportInvoice extends Model
         return $this->hasMany(ExportInvoiceItem::class, 'export_invoice_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

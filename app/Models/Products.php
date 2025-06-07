@@ -29,7 +29,7 @@ class Products extends Model
 
     public function invoiceItems()
     {
-        return $this->hasMany(ExportInvoiceItem::class);
+        return $this->hasMany(ExportInvoiceItem::class , 'product_id');
     }
 
 }

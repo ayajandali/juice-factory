@@ -99,6 +99,17 @@ class ExportInvoiceController extends Controller
     }
 
     /**
+     * Invoice details page 
+     */
+    public function Detail(ExportInvoice $invoice)
+    {
+        // جلب بيانات الفاتورة مع المنتجات المرتبطة
+        $invoice->load('items.product', 'user'); 
+        return view('accountant.export_details', compact('invoice'));
+    }
+
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -121,11 +132,35 @@ class ExportInvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $invoice = ExportInvoice::findOrFail($id);
+    public function destroy($id)
+{
+    $invoice = ExportInvoice::with('items.product')->findOrFail($id);
+
+    foreach ($invoice->items as $item) {
+        $productId = $item->product_id;
+        $quantity = $item->quantity;
+
+        // نحاول نلاقي المنتج في جدول available_products
+        $availableProduct = AvailableProduct::where('product_id', $productId)->first();
+
+        if ($availableProduct) {
+                // إذا موجود، نزيد الكمية
+                $availableProduct->quantity += $quantity;
+                $availableProduct->save();
+            } else {
+                // إذا مش موجود، نضيفه جديد
+                AvailableProduct::create([
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                ]);
+            }
+        }
+
+        // نحذف الفاتورة وبنودها
+        $invoice->items()->delete();
         $invoice->delete();
-    
-        return redirect()->route('export.all.invoice')->with('export_delete', 'Invoice deleted successfully!');
+
+        return redirect()->back()->with('export_delete', 'Invoice deleted and stock updated successfully.');
     }
+
 }

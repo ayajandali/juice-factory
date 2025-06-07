@@ -106,6 +106,9 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
             ->name('export.all.invoice');
 
+        Route::get('/invoices/{invoice}/show/details', [ExportInvoiceController::class, 'Detail'])
+            ->name('export.show.invoice');
+
         Route::get('/accountant/export/allInvoice/{id}/edit', [ExportInvoiceController::class, 'edit'])
             ->name('export.edit.invoice');
         
