@@ -36,4 +36,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Machine::class, 'machine_id');
     }
+
+    public function salaryInvoices()
+    {
+        return $this->hasMany(ImportInvoiceSalary::class);
+    }
+
 }

@@ -15,4 +15,10 @@ class RawMaterial extends Model
         return $this->hasMany(DailyWorkRawMaterial::class);
     }
 
+
+    public function importItems()
+    {
+        return $this->hasMany(ImportInvoiceItem::class);
+    }
+
 }

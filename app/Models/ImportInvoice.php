@@ -13,9 +13,19 @@ class ImportInvoice extends Model
         'invoice_number',
         'date',
         'total_amount',
-        'tax',
         'type',
         'description',
         'user_id',
     ];
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(ImportInvoiceItem::class);
+    }
+
+    public function salaries()
+    {
+        return $this->hasMany(ImportInvoiceSalary::class);
+    }
+
 }
