@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\DailyWorkStatus;
+use App\Models\Products;
+use App\Models\DailyWorkProduct;
+use App\Models\DailyWorkRawMaterial;
+use App\Models\AvailableProduct;
 use Illuminate\Http\Request;
 
 class ManagerDailyWorkStatus extends Controller
@@ -34,10 +38,19 @@ class ManagerDailyWorkStatus extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $status = DailyWorkStatus::with([
+            'user',
+            'rawMaterials.rawMaterial',
+            'products.product.availableProducts' // نجيب المنتج مع available_products
+        ])->findOrFail($id);
+
+        return view('dashboards.partials.dailyworkstatus_show', compact('status'));
     }
+
+
+
 
     /**
      * Show the form for editing the specified resource.

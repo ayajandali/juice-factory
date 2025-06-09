@@ -2,8 +2,12 @@
 namespace App\Models;
 use App\Models\availableProduct;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class Products extends Model
 {
+    protected $table = 'products';
     protected $fillable = [
         'product_name', 
         'description',
@@ -22,10 +26,11 @@ class Products extends Model
         return $this->hasMany(DailyWorkProduct::class);
     }
 
-    public function availableProduct()
+    public function availableProducts()
     {
-        return $this->hasOne(AvailableProduct::class);
+        return $this->hasMany(AvailableProduct::class , 'product_id');
     }
+
 
     public function invoiceItems()
     {

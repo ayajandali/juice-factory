@@ -14,14 +14,15 @@
                             <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Employee Name</th>
                             <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Date</th>
                             <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Description</th>
-                            <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Status</th>
+                            <th class="border border-blue-300 px-4 py-2 text-sm font-semibold">Actions</th> 
+
                         </tr>
                     </thead>
                     <tbody class="text-blue-800">
                         @foreach($dailyworkstatus as $status)
                             <tr class="hover:bg-blue-50">
                                 <td class="border border-blue-300 px-4 py-2 text-sm">
-                                    {{ $status->employee->first_name ?? 'Unknown' }}
+                                    {{ $status->user->first_name  }} {{$status->user->last_name}}
                                 </td>
                                 <td class="border border-blue-300 px-4 py-2 text-sm">
                                     {{ \Carbon\Carbon::parse($status->date)->format('Y-m-d') }}
@@ -29,9 +30,15 @@
                                 <td class="border border-blue-300 px-4 py-2 text-sm">
                                     {{ $status->notes }}
                                 </td>
-                                <td class="border border-blue-300 px-4 py-2 text-sm font-medium">
-                                    {{ ucfirst($status->work_status) }}
+
+                                <td class="border border-blue-300 px-4 py-2 text-sm">
+                                    <a href="{{ route('dailyworkstatus.show', $status->id) }}" 
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                        Show
+                                    </a>
                                 </td>
+
+                              
                             </tr>
                         @endforeach
                     </tbody>

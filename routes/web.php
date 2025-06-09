@@ -214,6 +214,9 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/Manager/DailyWorkStatus', [ManagerDailyWorkStatus::class, 'index'])
             ->name('manager.dailyworkstatus.index');
 
+        Route::get('/Manager/DailyWorkStatus/show/{id}', [ManagerDailyWorkStatus::class, 'show'])
+            ->name('dailyworkstatus.show');
+
         // عرض جميع الموظفين الموجودين في المعمل
         Route::get('/Manager/employees', [RegisteredEmployeeController::class, 'index'])
             ->name('manager.employees.index');
