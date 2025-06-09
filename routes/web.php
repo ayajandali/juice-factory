@@ -85,11 +85,17 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/accountant/export', [ExportInvoiceController::class, 'store'])
             ->name('accountant.export.store');
 
-        Route::get('/accountant/import', [ImportInvoiceController::class, 'index'])
-            ->name('accountant.import');
+        Route::get('/accountant/import/salary', [ImportInvoiceController::class, 'indexSalary'])
+            ->name('accountant.import.salary');
 
-        Route::post('/accountant/import', [ImportInvoiceController::class, 'store'])
-            ->name('accountant.import.store');
+        Route::get('/accountant/import/rawMaterials', [ImportInvoiceController::class, 'indexRaw'])
+            ->name('accountant.import.raw_materials');
+
+        Route::post('/accountant/import/storeSalary', [ImportInvoiceController::class, 'storeSalary'])
+            ->name('accountant.import.storeSalary');
+            
+        Route::post('/accountant/import/storeRaw', [ImportInvoiceController::class, 'storeRaw'])
+            ->name('accountant.import.storeRaw');
 
         Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
             ->name('import.all.invoice');

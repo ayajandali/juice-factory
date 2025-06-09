@@ -13,12 +13,17 @@ class ImportInvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function indexSalary()
     {
-        $rawMaterials = RawMaterial::select('id', 'name')->distinct()->get();
         $users = User::all();
 
-        return view('accountant.import' , compact('rawMaterials' , 'users'));
+        return view('accountant.import_salary' , compact('users'));
+    }
+
+    public function indexRaw()
+    {
+         $rawMaterials = RawMaterial::select('id', 'name')->distinct()->get();
+         return view('accountant.import_raw' , compact('rawMaterials'));
     }
 
     /**
@@ -32,94 +37,37 @@ class ImportInvoiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeSalary(Request $request)
     {
-    
-        /**
-         * dd($request->all());
-         */
-
+        // dd($request->all());
         $request->validate([
             'invoice_number' => 'required|string|max:255',
             'date' => 'required|date',
             'description' => 'nullable|string',
-            'type' => 'required|string',
-            'materials' => 'required_if:type,raw_materials|array',
-            'materials.*.name' => 'required_if:type,raw_materials|string',
-            'materials.*.quantity' => 'required_if:type,raw_materials|numeric|min:1',
-            'materials.*.size' => 'nullable|in:small,medium,large',
-            'materials.*.unit' => 'required_if:type,raw_materials|string',
-            'materials.*.price' => 'required_if:type,raw_materials|numeric|min:0',
-            'materials.*.subtotal' => 'nullable|numeric|min:0',
 
 
             'salaries' => 'required_if:type,salary|array',
-            'salaries.*.user_id' => 'required_if:type,salary|exists:users,id',
+            'salaries.*.user_id' => 'required_if:type,salary|exists:user,id',
             'salaries.*.salary' => 'required_if:type,salary|numeric|min:0',
-
-
         ]);
 
         $totalAmount = 0;
-        if ($request->type === 'raw materials') {
-        foreach ($request->materials as $material) {
-            $subtotal = $material['subtotal'] ?? ($material['price'] * $material['quantity']);
-            $totalAmount += $subtotal;
-        }
-        } elseif ($request->type === 'salary') {
-            foreach ($request->salaries as $salaryData) {
-                $totalAmount += $salaryData['salary'];
-            }
+        foreach ($request->salaries as $salaryData) {
+            $totalAmount += $salaryData['salary'];
         }
 
+        $invoice_type = 'salary';
         // إنشاء الفاتورة الواردة
         $importInvoice = ImportInvoice::create([
             'invoice_number' => $request->invoice_number,
             'date' => $request->date,
             'description' => $request->description,
-            'type' => $request->type,
-            'total_amount'=>$totalِِAmount,
+            'type' => $invoice_type,
+            'total_amount'=>$totalAmount,
             'user_id' => auth()->id(),
         ]);
 
-
-        // فقط إذا كانت الفاتورة من نوع مواد خام
-        if ($request->type === 'raw materials') {
-            $request->validate([
-                'materials' => 'required|array|min:1',
-                'materials.*.name' => 'required|string|exists:raw_materials,name',
-                'materials.*.quantity' => 'required|numeric|min:1',
-                'materials.*.unit' => 'required|in:kg,piece',
-            ]);
-
-            foreach ($request->materials as $material) {
-                // إضافة العنصر إلى جدول import_invoice_items
-
-                $rawMaterial = RawMaterial::where('name', $material['name'])->first();
-                if($rawMaterial){
-                    //dd($material);
-                    ImportInvoiceItem::create([
-                    'import_invoice_id' => $importInvoice->id,
-                    'raw_material_id' => $rawMaterial->id,
-                    'name' => $material['name'],
-                    'size' => $material['size'],
-                    'quantity' => $material['quantity'],
-                    'unit' => $material['unit'],
-                    'price' => $material['price'],
-                    'subtotal' => $material['subtotal'] ?? ($material['price'] * $material['quantity']),
-                ]);
-
-                // تحديث الكمية في جدول raw_materials
-                    $rawMaterial->quantity += $material['quantity'];
-                    $rawMaterial->save();
-                
-                }
-                
-            }
-        }
-
-
-        if ($request->type === 'salary') {
+        
         foreach ($request->salaries as $salaryData) {
             ImportInvoiceSalary::create([
                 'import_invoice_id' => $importInvoice->id,
@@ -127,8 +75,75 @@ class ImportInvoiceController extends Controller
                 'salary' => $salaryData['salary'],
             ]);
         }
+        
+
+        return redirect()->back()->with('success', 'Invoice added successfully!');
     }
 
+    public function storeRaw()
+    {
+        $request->validate([
+
+            'invoice_number' => 'required|string|max:255',
+            'date' => 'required|date',
+            'description' => 'nullable|string',
+
+            'materials' => 'required|array',
+            'materials.*.name' => 'required|string',
+            'materials.*.quantity' => 'required|numeric|min:1',
+            'materials.*.size' => 'nullable|in:small,medium,large',
+            'materials.*.unit' => 'required|string',
+            'materials.*.price' => 'required|numeric|min:0',
+            'materials.*.subtotal' => 'nullable|numeric|min:0',
+        ]);
+
+        $request->validate([
+            'materials' => 'required|array|min:1',
+            'materials.*.name' => 'required|string|exists:raw_materials,name',
+            'materials.*.quantity' => 'required|numeric|min:1',
+            'materials.*.unit' => 'required|in:kg,piece',
+        ]);
+
+        $totalAmount = 0;
+        foreach ($request->materials as $material) {
+            $subtotal = $material['subtotal'] ?? ($material['price'] * $material['quantity']);
+            $totalAmount += $subtotal;
+        }
+
+        $invoice_type = 'raw materials';
+        // إنشاء الفاتورة الواردة
+        $importInvoice = ImportInvoice::create([
+            'invoice_number' => $request->invoice_number,
+            'date' => $request->date,
+            'description' => $request->description,
+            'type' => $invoice_type,
+            'total_amount'=>$totalAmount,
+            'user_id' => auth()->id(),
+        ]);
+
+        foreach ($request->materials as $material) {
+            // إضافة العنصر إلى جدول import_invoice_items
+            $rawMaterial = RawMaterial::where('name', $material['name'])->first();
+            if($rawMaterial){
+                //dd($material);
+                ImportInvoiceItem::create([
+                'import_invoice_id' => $importInvoice->id,
+                'raw_material_id' => $rawMaterial->id,
+                'name' => $material['name'],
+                'size' => $material['size'],
+                'quantity' => $material['quantity'],
+                'unit' => $material['unit'],
+                'price' => $material['price'],
+                'subtotal' => $material['subtotal'] ?? ($material['price'] * $material['quantity']),
+            ]);
+
+            // تحديث الكمية في جدول raw_materials
+                $rawMaterial->quantity += $material['quantity'];
+                $rawMaterial->save();
+            
+            }
+            
+        }
 
         return redirect()->back()->with('success', 'Invoice added successfully!');
     }

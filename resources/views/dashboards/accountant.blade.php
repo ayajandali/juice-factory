@@ -53,10 +53,17 @@
                         </button>
                     </form>
 
-                    <form action="{{ route('accountant.import') }}" method="get">
+                    <form action="{{ route('accountant.import.salary') }}" method="get">
                         <button type="submit"
                             class="inline-flex items-center gap-2 px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-xl shadow transition">
-                            📥 Import
+                            📥 Salary Import
+                        </button>
+                    </form>
+
+                    <form action="{{ route('accountant.import.raw_materials') }}" method="get">
+                        <button type="submit"
+                            class="inline-flex items-center gap-2 px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-xl shadow transition">
+                            📥 Raw Materials Import
                         </button>
                     </form>
                 </div>
