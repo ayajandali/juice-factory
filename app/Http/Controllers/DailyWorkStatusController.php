@@ -78,12 +78,17 @@ class DailyWorkStatusController extends Controller
                     'quantity_produced' => $product['quantity'],
                 ]);
 
+                $production_date = now()->toDateString(); 
                 // تحديث أو إنشاء المنتج في جدول available_products
-                $available = AvailableProduct::firstOrNew(['product_id' => $product['id']]);
+                $available = AvailableProduct::firstOrNew([
+                'product_id' => $product['id'],
+                'production_date' => $production_date,
+                'expiry_date' => $product['expiry_date'],
+                ]);
+
                 $available->quantity = ($available->quantity ?? 0) + $product['quantity'];
-                $available->production_date = now()->toDateString(); 
-                $available->expiry_date = $product['expiry_date'] ?? $available->expiry_date;
                 $available->save();
+
             }
         });
 
@@ -93,3 +98,4 @@ class DailyWorkStatusController extends Controller
 
 
 }
+
