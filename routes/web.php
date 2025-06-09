@@ -93,12 +93,19 @@ Route::middleware(['auth'])->group(function() {
 
         Route::post('/accountant/import/storeSalary', [ImportInvoiceController::class, 'storeSalary'])
             ->name('accountant.import.storeSalary');
-            
+
         Route::post('/accountant/import/storeRaw', [ImportInvoiceController::class, 'storeRaw'])
             ->name('accountant.import.storeRaw');
 
+
+
         Route::get('/accountant/import/allInvoice', [ImportInvoiceController::class, 'show'])
             ->name('import.all.invoice');
+
+
+
+        Route::get('/accountant/import/salary/details/{id}', [ImportInvoiceController::class, 'details'])
+            ->name('import_salary_details');
 
         Route::get('/accountant/import/allInvoice/{id}/edit', [ImportInvoiceController::class, 'edit'])
             ->name('import.edit.invoice');
@@ -108,6 +115,22 @@ Route::middleware(['auth'])->group(function() {
 
         Route::delete('/accountant/import/allInvoice/{id}', [ImportInvoiceController::class, 'destroy'])
             ->name('import.destroy.invoice');
+
+/////////////////
+
+        Route::get('/accountant/import/rawMaterials/details/{id}', [ImportInvoiceController::class, 'rawDetails'])
+            ->name('import_raw_details');
+
+        Route::get('/accountant/import/allInvoice/{id}/rawEdit', [ImportInvoiceController::class, 'rawEdit'])
+            ->name('import.rawEdit.invoice');
+
+        Route::put('/accountant/import/allInvoice/{id}/rawUpdate', [ImportInvoiceController::class, 'rawUpdate'])
+            ->name('import.rawUpdate.invoice');
+
+        Route::delete('/accountant/import/allInvoice/{id}/rawDelete', [ImportInvoiceController::class, 'rawDestroy'])
+            ->name('import.rawDestroy.invoice');
+
+///////////////
 
         Route::get('/accountant/export/allInvoice', [ExportInvoiceController::class, 'show'])
             ->name('export.all.invoice');
