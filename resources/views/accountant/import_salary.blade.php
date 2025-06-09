@@ -64,6 +64,22 @@
                 </button>
             </div>
         </form>
+
+         @if (session('success'))
+                <div class="mt-4 p-4 text-sm text-green-600 bg-green-100 rounded-md">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
     </div>
 
     {{-- JavaScript --}}

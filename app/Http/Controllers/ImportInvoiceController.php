@@ -80,70 +80,61 @@ class ImportInvoiceController extends Controller
         return redirect()->back()->with('success', 'Invoice added successfully!');
     }
 
-    public function storeRaw()
+    public function storeRaw(Request $request)
     {
-        $request->validate([
+         $validated = $request->validate([
 
             'invoice_number' => 'required|string|max:255',
             'date' => 'required|date',
             'description' => 'nullable|string',
-
-            'materials' => 'required|array',
-            'materials.*.name' => 'required|string',
-            'materials.*.quantity' => 'required|numeric|min:1',
-            'materials.*.size' => 'nullable|in:small,medium,large',
-            'materials.*.unit' => 'required|string',
-            'materials.*.price' => 'required|numeric|min:0',
-            'materials.*.subtotal' => 'nullable|numeric|min:0',
-        ]);
-
-        $request->validate([
             'materials' => 'required|array|min:1',
-            'materials.*.name' => 'required|string|exists:raw_materials,name',
-            'materials.*.quantity' => 'required|numeric|min:1',
+            'materials.*.material_id' => 'required|exists:raw_materials,id',
+            'materials.*.size' => 'nullable|in:small,medium,large',
+            'materials.*.quantity' => 'required|numeric|min:0',
             'materials.*.unit' => 'required|in:kg,piece',
-        ]);
+            'materials.*.price' => 'required|numeric|min:0',
+            ]);
+
 
         $totalAmount = 0;
-        foreach ($request->materials as $material) {
-            $subtotal = $material['subtotal'] ?? ($material['price'] * $material['quantity']);
-            $totalAmount += $subtotal;
+        foreach ($validated['materials'] as $material) {
+            $totalAmount += $material['quantity'] * $material['price'];
         }
 
         $invoice_type = 'raw materials';
-        // إنشاء الفاتورة الواردة
-        $importInvoice = ImportInvoice::create([
-            'invoice_number' => $request->invoice_number,
-            'date' => $request->date,
-            'description' => $request->description,
-            'type' => $invoice_type,
-            'total_amount'=>$totalAmount,
-            'user_id' => auth()->id(),
+         // إنشاء الفاتورة
+        $invoice = ImportInvoice::create([
+            'invoice_number' => $validated['invoice_number'],
+            'date' => $validated['date'],
+            'description' => $validated['description'],
+            'type' => $invoice_type, 
+            'total_amount' => $totalAmount,
+            'user_id'=>auth()->id(),
         ]);
 
-        foreach ($request->materials as $material) {
-            // إضافة العنصر إلى جدول import_invoice_items
-            $rawMaterial = RawMaterial::where('name', $material['name'])->first();
-            if($rawMaterial){
-                //dd($material);
+        
+
+            // حفظ تفاصيل المواد الخام
+            foreach ($validated['materials'] as $material) {
                 ImportInvoiceItem::create([
-                'import_invoice_id' => $importInvoice->id,
-                'raw_material_id' => $rawMaterial->id,
-                'name' => $material['name'],
-                'size' => $material['size'],
-                'quantity' => $material['quantity'],
-                'unit' => $material['unit'],
-                'price' => $material['price'],
-                'subtotal' => $material['subtotal'] ?? ($material['price'] * $material['quantity']),
-            ]);
+                    'import_invoice_id' => $invoice->id,
+                    'raw_material_id' => $material['material_id'],
+                    'size' => $material['size'],
+                    'quantity' => $material['quantity'],
+                    'unit' => $material['unit'],
+                    'price' => $material['price'],
+                    'subtotal' => $material['quantity'] * $material['price'],
+                ]);
+            
 
             // تحديث الكمية في جدول raw_materials
+                $rawMaterial = RawMaterial::find($material['material_id']);
                 $rawMaterial->quantity += $material['quantity'];
                 $rawMaterial->save();
-            
+
             }
             
-        }
+            
 
         return redirect()->back()->with('success', 'Invoice added successfully!');
     }
