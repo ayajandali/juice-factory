@@ -273,11 +273,27 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('/manager/product/{product}', [ProductController::class, 'destroy'])
             ->name('manager.product.destroy');
 
+
+
+
         Route::get('/manager/product/available', [ProductController::class, 'available'])
             ->name('manager.product.available');
+        Route::delete('/manager/product/available/{id}', [ProductController::class, 'destroyAvailableProduct'])
+            ->name('manager.available-products.destroy');
+
 
         Route::get('/manager/rawMaterials/available', [ProductController::class, 'rawMaterial'])
             ->name('manager.rawmaterials.available');
+
+        Route::get('/manager/rawMaterials/create', [ProductController::class, 'rawMaterialCreate'])
+            ->name('raw-materials.create');
+
+        
+        Route::post('/manager/rawMaterials/store', [ProductController::class, 'rawMaterialStore'])
+            ->name('raw-materials.store');
+
+        Route::delete('/manager/rawMaterial/{id}', [ProductController::class, 'destroyRawMaterial'])
+            ->name('manager.rawMaterial.destroy');
         
     });
 });

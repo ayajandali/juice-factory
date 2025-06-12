@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Products;
-use App\Models\Machine;;
+use App\Models\Machine;
+use App\Models\RawMaterial;
+use App\Models\AvailableProduct;
 
 class ProductController extends Controller
 {
@@ -73,34 +75,34 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
   public function update(Request $request, $id)
-{
-    $request->validate([
-        'product_name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'machine_id' => 'required|exists:machines,id',
-        'size' => 'required|in:small,medium,large',
-        'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-        'price' => 'required|numeric',
-    ]);
+  {
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'machine_id' => 'required|exists:machines,id',
+            'size' => 'required|in:small,medium,large',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'price' => 'required|numeric',
+        ]);
 
-    $product = Products::findOrFail($id);
+        $product = Products::findOrFail($id);
 
-    $data = $request->only([
-        'product_name',
-        'description',
-        'price',
-        'machine_id',
-        'size',
-    ]);
+        $data = $request->only([
+            'product_name',
+            'description',
+            'price',
+            'machine_id',
+            'size',
+        ]);
 
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('products', 'public');
-        $data['image'] = $imagePath;
-    }
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $data['image'] = $imagePath;
+        }
 
-    $product->update($data);
+        $product->update($data);
 
-    return redirect()->route('manager.product.index')->with('success', 'Product updated successfully');
+        return redirect()->route('manager.product.index')->with('success', 'Product updated successfully');
 }
 
     /**
@@ -111,5 +113,58 @@ class ProductController extends Controller
         $product->delete();
         return redirect()-> route('manager.product.index')
         ->with('success','Product deleted successfully');
+    }
+
+
+    public function rawMaterial()
+    {
+        $rawMaterials = rawMaterial::all();
+        return view('dashboards.allRawMaterials',compact('rawMaterials'));
+    }
+
+    public function rawMaterialCreate(Request $request)
+    {
+        return view('dashboards.rawmaterial_create');
+    }
+
+    public function rawMaterialStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:0',
+            'unit' => 'required|string|in:kg,piece',
+            ]);
+
+            RawMaterial::create([
+                'name' => $request->name,
+                'quantity' => $request->quantity,
+                'unit' => $request->unit,
+            ]);
+
+            return redirect()->route('manager.rawmaterials.available')->with('success', 'Raw material added successfully.');
+    }
+
+    public function destroyRawMaterial($id)
+    {
+            $material = RawMaterial::findOrFail($id);
+            $material->delete();
+
+            return redirect()->route('manager.rawmaterials.available')->with('success', 'Raw material deleted successfully.');
+    }
+
+
+    public function available()
+    {
+        $availableProducts = AvailableProduct::with('product')->get();
+        return view('dashboards.allAvailableProduct' , compact('availableProducts'));
+    }
+
+    public function destroyAvailableProduct($id)
+    {
+        $availableProduct = AvailableProduct::findOrFail($id);
+        $availableProduct->delete();
+
+        return redirect()->back()->with('success', 'Available product deleted successfully.');
+
     }
 }

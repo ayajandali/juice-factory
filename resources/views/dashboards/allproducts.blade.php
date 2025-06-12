@@ -22,7 +22,7 @@
                         <th class="px-4 py-2 text-left">Price</th>
                         <th class="px-4 py-2 text-left">Description</th>
                         <th class="px-4 py-2 text-left">Size</th>
-                        <th class="px-4 py-2 text-left">Machine ID</th>
+                        <th class="px-4 py-2 text-left">Machine Name</th>
                         <th class="px-4 py-2 text-left">Image</th>
                         <th class="px-4 py-2 text-left">Actions</th>
                     </tr>
@@ -34,7 +34,7 @@
                             <td class="px-4 py-2">{{ $product->price }}</td>
                             <td class="px-4 py-2">{{ $product->description }}</td>
                             <td class="px-4 py-2">{{ $product->size }}</td>
-                            <td class="px-4 py-2">{{ $product->machine_id }}</td>
+                            <td class="px-4 py-2">{{ $product->machine->name }}</td>
                             <td class="px-4 py-2">
                                 @if ($product->image)
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-16 h-16 object-cover rounded">
