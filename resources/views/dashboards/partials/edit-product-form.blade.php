@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">تعديل المنتج</h2>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Product Update</h2>
     </x-slot>
 
     <div class="py-8">
@@ -11,37 +11,25 @@
 
                 <!-- اسم المنتج -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">اسم المنتج</label>
-                    <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}" class="w-full mt-1 border-gray-300 rounded" required>
+                    <label class="block text-gray-700">Product Name</label>
+                    <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}" class="w-full mt-1 border-gray-300 rounded">
+                </div>
+
+                <!-- Price -->
+                <div class="mb-4">
+                    <label class="block text-gray-700">Price</label>
+                    <input type="text" name="price" value="{{ old('price', $product->price) }}" class="w-full mt-1 border-gray-300 rounded">
                 </div>
 
                 <!-- الوصف -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">الوصف</label>
+                    <label class="block text-gray-700">Description</label>
                     <textarea name="description" class="w-full mt-1 border-gray-300 rounded">{{ old('description', $product->description) }}</textarea>
-                </div>
-
-                <!-- تاريخ الإنتاج -->
-                <div class="mb-4">
-                    <label class="block text-gray-700">تاريخ الإنتاج</label>
-                    <input type="date" name="production_date" value="{{ old('production_date', $product->production_date) }}" class="w-full mt-1 border-gray-300 rounded" required>
-                </div>
-
-                <!-- تاريخ الانتهاء -->
-                <div class="mb-4">
-                    <label class="block text-gray-700">تاريخ الانتهاء</label>
-                    <input type="date" name="expiry_date" value="{{ old('expiry_date', $product->expiry_date) }}" class="w-full mt-1 border-gray-300 rounded" required>
-                </div>
-
-                <!-- الكمية -->
-                <div class="mb-4">
-                    <label class="block text-gray-700">الكمية</label>
-                    <input type="number" name="quantity" value="{{ old('quantity', $product->quantity) }}" class="w-full mt-1 border-gray-300 rounded" required>
                 </div>
 
                 <!-- الآلة -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">اختر الآلة</label>
+                    <label class="block text-gray-700">Machine</label>
                     <select name="machine_id" class="w-full mt-1 border-gray-300 rounded" required>
                         @foreach ($machines as $machine)
                             <option value="{{ $machine->id }}" {{ $machine->id == $product->machine_id ? 'selected' : '' }}>
@@ -53,25 +41,35 @@
 
                 <!-- الحجم -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">الحجم</label>
+                    <label class="block text-gray-700">Size</label>
                     <select name="size" class="w-full mt-1 border-gray-300 rounded" required>
-                        <option value="Small" {{ $product->size == 'Small' ? 'selected' : '' }}>صغير</option>
-                        <option value="Medium" {{ $product->size == 'Medium' ? 'selected' : '' }}>متوسط</option>
-                        <option value="Large" {{ $product->size == 'Large' ? 'selected' : '' }}>كبير</option>
+                        <option value="small" {{ $product->size == 'small' ? 'selected' : '' }}>small</option>
+                        <option value="medium" {{ $product->size == 'medium' ? 'selected' : '' }}>medium</option>
+                        <option value="large" {{ $product->size == 'large' ? 'selected' : '' }}>large</option>
                     </select>
                 </div>
 
                 <!-- صورة المنتج -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">صورة المنتج (اختياري)</label>
+                    <label class="block text-gray-700">Product Image</label>
                     <input type="file" name="image" class="w-full mt-1">
                     @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="صورة المنتج" class="mt-2 h-20">
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="mt-2 h-20">
                     @endif
                 </div>
 
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">تحديث المنتج</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update Product</button>
             </form>
+
+             @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

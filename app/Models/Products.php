@@ -12,6 +12,7 @@ class Products extends Model
         'product_name', 
         'description',
         'machine_id',
+        'price',
         'image',
         'size',
     ];

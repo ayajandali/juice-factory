@@ -35,9 +35,7 @@ class ProductController extends Controller
     $validated = $request->validate([
         'product_name' => 'required|string|max:255',
         'description' => 'nullable|string',
-        'production_date' => 'required|date',
-        'expiry_date' => 'required|date',
-        'quantity' => 'required|integer',
+        'price' => 'required|numeric',
         'machine_id' => 'required|exists:machines,id',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'size' => 'nullable|string|max:50',
@@ -50,7 +48,7 @@ class ProductController extends Controller
 
     Products::create($validated);
 
-    return redirect()->route('manager.product.index')->with('success', 'تم إضافة المنتج بنجاح');
+    return redirect()->route('manager.product.index')->with('success', 'Product added successfully');
 }
 
     /**
@@ -79,12 +77,10 @@ class ProductController extends Controller
     $request->validate([
         'product_name' => 'required|string|max:255',
         'description' => 'nullable|string',
-        'production_date' => 'required|date',
-        'expiry_date' => 'required|date|after_or_equal:production_date',
-        'quantity' => 'required|integer|min:0',
         'machine_id' => 'required|exists:machines,id',
-        'size' => 'required|in:Small,Medium,Large',
+        'size' => 'required|in:small,medium,large',
         'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        'price' => 'required|numeric',
     ]);
 
     $product = Products::findOrFail($id);
@@ -92,14 +88,11 @@ class ProductController extends Controller
     $data = $request->only([
         'product_name',
         'description',
-        'production_date',
-        'expiry_date',
-        'quantity',
+        'price',
         'machine_id',
         'size',
     ]);
 
-    // إذا تم رفع صورة جديدة
     if ($request->hasFile('image')) {
         $imagePath = $request->file('image')->store('products', 'public');
         $data['image'] = $imagePath;
@@ -107,7 +100,7 @@ class ProductController extends Controller
 
     $product->update($data);
 
-    return redirect()->route('manager.product.index')->with('success', 'تم تحديث المنتج بنجاح');
+    return redirect()->route('manager.product.index')->with('success', 'Product updated successfully');
 }
 
     /**
