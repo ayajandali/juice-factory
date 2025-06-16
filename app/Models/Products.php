@@ -1,6 +1,6 @@
 <?php
 namespace App\Models;
-use App\Models\availableProduct;
+use App\Models\AvailableProduct;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,7 +29,7 @@ class Products extends Model
 
     public function availableProducts()
     {
-        return $this->hasMany(AvailableProduct::class , 'product_id');
+        return $this->hasMany(App\Models\AvailableProduct::class , 'product_id'); 
     }
 
 

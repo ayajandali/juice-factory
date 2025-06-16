@@ -12,7 +12,7 @@
                 <p><span class="font-semibold text-blue-600">Invoice Number:</span> {{ $invoice->invoice_number }}</p>
                 <p><span class="font-semibold text-blue-600">Date:</span> {{ \Carbon\Carbon::parse($invoice->date)->format('d/m/Y') }}</p>
                 <p><span class="font-semibold text-blue-600">Description:</span> {{ $invoice->description ?? 'No description' }}</p>
-                <p><span class="font-semibold text-blue-600">User:</span> {{ $invoice->user->name ?? 'Unknown' }}</p>
+                <p><span class="font-semibold text-blue-600">User:</span> {{ $invoice->user->first_name }} {{$invoice->user->last_name}}</p>
                 <p><span class="font-semibold text-blue-600">Total Amount:</span> ${{ number_format($invoice->total_amount, 2) }}</p>
             </div>
         </div>

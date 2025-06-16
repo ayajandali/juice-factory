@@ -14,7 +14,7 @@ class ExportInvoiceController extends Controller
      */
     public function index()
     {
-        $products = AvailableProduct::with('products')->get();
+        $products = AvailableProduct::with('product')->get();
         return view('accountant.export' , compact('products'));
     }
 
@@ -75,7 +75,7 @@ class ExportInvoiceController extends Controller
 
             // تحديث كمية المنتج في جدول available_products
             \DB::table('available_products')
-                ->where('product_id', $productData['product_id'])
+                ->where('id', $productData['product_id'])
                 ->decrement('quantity', $quantity);
 
             // حذف السطر إذا الكمية أصبحت صفر أو أقل

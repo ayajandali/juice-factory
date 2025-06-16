@@ -40,12 +40,14 @@
                         <div class="product-item flex items-center space-x-4 mb-3">
                             <select name="products[0][product_id]" class="product-select w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" onchange="updateTotalAmount()">
                                 @foreach ($products as $item)
-                                    @if($item->products)
-                                        <option value="{{ $item->products->id }}" data-price="{{ $item->products->price }}">
-                                            {{ $item->products->product_name }} - ${{ number_format($item->products->price, 2) }}
+                                    @if($item->product)
+                                        <option value="{{ $item->id }}" data-price="{{ $item->product->price }}">
+                                            {{ $item->product->product_name }} - ${{ number_format($item->product->price, 2) }} - {{$item->expiry_date}}
                                         </option>
                                     @endif
                                 @endforeach
+
+
                             </select>
                             <input type="number" name="products[0][quantity]" class="quantity-input w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" placeholder="Quantity" min="1" oninput="updateTotalAmount()">
                         </div>
@@ -118,13 +120,14 @@
                 // هنا أضفتها ثابتة، لكن الأفضل جلبها من السيرفر مباشرة أو تمريرها من Blade
                 let optionsHtml = `
                     @foreach ($products as $item)
-                        @if($item->products)
-                            <option value="{{ $item->products->id }}" data-price="{{ $item->products->price }}">
-                                {{ $item->products->product_name }} - ${{ number_format($item->products->price, 2) }}
+                        @if($item->product)
+                            <option value="{{ $item->product->id }}" data-price="{{ $item->product->price }}">
+                                {{ $item->product->product_name }} - ${{ number_format($item->product->price, 2) }}
                             </option>
                         @endif
                     @endforeach
                 `;
+
 
                 newProductDiv.innerHTML = `
                     <select name="products[${productIndex}][product_id]" class="product-select w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" onchange="updateTotalAmount()">
