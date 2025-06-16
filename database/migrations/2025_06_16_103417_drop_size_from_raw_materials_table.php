@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('import_invoice_salaries', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('raw_materials', function (Blueprint $table) {
+            $table->dropColumn('size');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('import_invoice_salaries');
+        Schema::table('raw_materials', function (Blueprint $table) {
+            //
+        });
     }
 };

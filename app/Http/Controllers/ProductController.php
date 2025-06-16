@@ -43,6 +43,7 @@ class ProductController extends Controller
         'size' => 'nullable|string|max:50',
     ]);
 
+
     if ($request->hasFile('image')) {
         $imagePath = $request->file('image')->store('products', 'public');
         $validated['image'] = $imagePath;

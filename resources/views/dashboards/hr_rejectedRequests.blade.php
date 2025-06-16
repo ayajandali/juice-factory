@@ -7,7 +7,7 @@
         <h3 class="text-lg font-semibold text-gray-700 mb-4">List of Rejected Requests</h3>
 
         @if($rejectedRequests->isEmpty())
-            <p class="text-gray-500">No approved leave requests found.</p>
+            <p class="text-gray-500">No rejected leave requests found.</p>
         @else
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">
