@@ -17,12 +17,7 @@
                         required>
                 </div>
 
-                <div class="mb-4">
-                    <label for="quantity" class="block text-gray-700">Quantity</label>
-                    <input type="number" name="quantity" id="quantity" step="0.01"
-                        class="w-full px-4 py-2 border rounded focus:outline-none focus:ring"
-                        required>
-                </div>
+                
 
                 <div class="mb-4">
                     <label for="unit" class="block text-gray-700">Unit</label>
@@ -39,6 +34,16 @@
                     </button>
                 </div>
             </form>
+
+             @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

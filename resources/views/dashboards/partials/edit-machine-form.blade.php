@@ -34,7 +34,6 @@
                 <input type="date" name="last_maintenance_date" id="last_maintenance_date"
                        value="{{ old('last_maintenance_date', $machine->last_maintenance_date ? \Carbon\Carbon::parse($machine->last_maintenance_date)->format('Y-m-d') : '') }}"
                        class="w-full border border-blue-300 rounded-md shadow-sm focus:ring-blue-800 focus:border-blue-800 px-3 py-2">
-                <p class="text-xs text-blue-700 mt-1">Leave blank if no maintenance has been performed yet.</p>
             </div>
 
             <!-- Submit Button -->

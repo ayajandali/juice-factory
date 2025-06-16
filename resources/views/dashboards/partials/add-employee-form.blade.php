@@ -89,5 +89,14 @@
 
             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Add Employee</button>
         </form>
+                    @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
     </div>
 </x-app-layout>

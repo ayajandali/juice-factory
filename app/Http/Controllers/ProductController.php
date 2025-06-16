@@ -132,13 +132,12 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'quantity' => 'required|numeric|min:0',
             'unit' => 'required|string|in:kg,piece',
             ]);
 
             RawMaterial::create([
                 'name' => $request->name,
-                'quantity' => $request->quantity,
+                'quantity' => 0,
                 'unit' => $request->unit,
             ]);
 
