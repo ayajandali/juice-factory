@@ -43,17 +43,6 @@
                             </select>
                         </div>
 
-                        {{-- Size --}}
-                        <div>
-                            <label class="block text-sm text-gray-600 mb-1">Size (optional)</label>
-                            <select name="materials[0][size]"
-                                    class="w-full p-2 border border-gray-300 rounded-md">
-                                <option value="">--</option>
-                                <option value="small">Small</option>
-                                <option value="medium">Medium</option>
-                                <option value="large">Large</option>
-                            </select>
-                        </div>
 
                         {{-- Quantity --}}
                         <div>
@@ -150,15 +139,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div>
-                    <select name="materials[${materialIndex}][size]"
-                            class="w-full p-2 border border-gray-300 rounded-md">
-                        <option value="">--</option>
-                        <option value="small">Small</option>
-                        <option value="medium">Medium</option>
-                        <option value="large">Large</option>
-                    </select>
-                </div>
+                
                 <div>
                     <input type="number" name="materials[${materialIndex}][quantity]" min="0" step="0.01"
                            class="quantity-input w-full p-2 border border-gray-300 rounded-md">

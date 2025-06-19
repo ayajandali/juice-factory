@@ -90,7 +90,6 @@ class ImportInvoiceController extends Controller
             'description' => 'nullable|string',
             'materials' => 'required|array|min:1',
             'materials.*.material_id' => 'required|exists:raw_materials,id',
-            'materials.*.size' => 'nullable|in:small,medium,large',
             'materials.*.quantity' => 'required|numeric|min:0',
             'materials.*.unit' => 'required|in:kg,piece',
             'materials.*.price' => 'required|numeric|min:0',
@@ -120,7 +119,6 @@ class ImportInvoiceController extends Controller
                 ImportInvoiceItem::create([
                     'import_invoice_id' => $invoice->id,
                     'raw_material_id' => $material['material_id'],
-                    'size' => $material['size'],
                     'quantity' => $material['quantity'],
                     'unit' => $material['unit'],
                     'price' => $material['price'],

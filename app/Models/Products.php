@@ -29,7 +29,7 @@ class Products extends Model
 
     public function availableProducts()
     {
-        return $this->hasMany(App\Models\AvailableProduct::class , 'product_id'); 
+        return $this->hasMany(\App\Models\AvailableProduct::class , 'product_id'); 
     }
 
 

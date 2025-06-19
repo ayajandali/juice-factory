@@ -51,7 +51,7 @@
                                         <td class="border px-4 py-2">{{ $invoice->description }}</td>
                                         <td class="border px-4 py-2">
                                             <a href="{{ route('import.edit.invoice', $invoice->id) }}" class="text-[#011491] hover:underline">Edit</a>
-                                            <a href="{{ route('import_salary_details', $invoice->id) }}" class="text-[#011491] hover:underline">Show</a>
+                                            <a href="{{ route('import_salary_details', $invoice->id) }}" class="text-[#01910b] hover:underline">Show</a>
                                             <form action="{{ route('import.destroy.invoice', $invoice->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')

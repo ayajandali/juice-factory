@@ -20,7 +20,6 @@
                     <thead class="bg-[#2e3a89] text-white">
                         <tr>
                             <th class="border px-4 py-2">Name</th>
-                            <th class="border px-4 py-2">Size</th>
                             <th class="border px-4 py-2">Quantity</th>
                             <th class="border px-4 py-2">Unit</th>
                             <th class="border px-4 py-2">Price</th>
