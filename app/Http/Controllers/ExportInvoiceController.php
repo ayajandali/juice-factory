@@ -71,9 +71,8 @@ class ExportInvoiceController extends Controller
             $P_id = $availableProduct->product_id;
 
 
-
             $invoice->items()->create([
-                'product_id' => $P_id,
+                'available_product_id' => $productData['product_id'],
                 'quantity' => $quantity,
                 'price' => $price,
                 'subtotal' => $subtotal,
@@ -84,11 +83,6 @@ class ExportInvoiceController extends Controller
                 ->where('id', $productData['product_id'])
                 ->decrement('quantity', $quantity);
 
-            // حذف السطر إذا الكمية أصبحت صفر أو أقل
-            \DB::table('available_products')
-                ->where('id', $productData['product_id'])
-                ->where('quantity', '<=', 0)
-                ->delete();
         }
 
         return redirect()->back()->with('status', 'Invoice created successfully!');
@@ -139,34 +133,27 @@ class ExportInvoiceController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
-    $invoice = ExportInvoice::with('items.product')->findOrFail($id);
+    {
+        $invoice = ExportInvoice::with('items.product')->findOrFail($id);
 
-    foreach ($invoice->items as $item) {
-        $productId = $item->product_id;
-        $quantity = $item->quantity;
+        foreach ($invoice->items as $item) {
+            $productId = $item->available_product_id;
+            $quantity = $item->quantity;
 
-        // نحاول نلاقي المنتج في جدول available_products
-        $availableProduct = AvailableProduct::where('product_id', $productId)->first();
-
-        if ($availableProduct) {
-                // إذا موجود، نزيد الكمية
-                $availableProduct->quantity += $quantity;
-                $availableProduct->save();
-            } else {
-                // إذا مش موجود، نضيفه جديد
-                AvailableProduct::create([
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                ]);
+            // نحاول نلاقي المنتج في جدول available_products
+            $availableProduct = AvailableProduct::where('id', $productId)->first();
+        
+            //  نزيد الكمية
+            $availableProduct->quantity += $quantity;
+            $availableProduct->save();
+            
             }
+
+            // نحذف الفاتورة وبنودها
+            $invoice->items()->delete();
+            $invoice->delete();
+
+            return redirect()->back()->with('export_delete', 'Invoice deleted and stock updated successfully.');
         }
-
-        // نحذف الفاتورة وبنودها
-        $invoice->items()->delete();
-        $invoice->delete();
-
-        return redirect()->back()->with('export_delete', 'Invoice deleted and stock updated successfully.');
-    }
 
 }

@@ -13,7 +13,7 @@ class ExportInvoiceItem extends Model
 
     protected $fillable = [
         'export_invoice_id',
-        'product_id',
+        'available_product_id',
         'quantity',
         'price',
         'subtotal',
@@ -22,7 +22,7 @@ class ExportInvoiceItem extends Model
 
     public function product()
     {
-        return $this->belongsTo(Products::class, 'product_id');
+        return $this->belongsTo(AvailableProduct::class, 'available_product_id');
     }
 
 

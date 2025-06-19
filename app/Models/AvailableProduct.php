@@ -17,5 +17,9 @@ class AvailableProduct extends Model
         return $this->belongsTo(\App\Models\Products::class , 'product_id');
     }
 
+    public function invoiceItems()
+    {
+        return $this->hasMany(ExportInvoiceItem::class , 'available_product_id');
+    }
 
 }
