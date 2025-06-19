@@ -31,20 +31,21 @@ class ExportInvoiceController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'invoice_number' => 'required|string|max:255',
             'date' => 'required|date',
             'total_amount' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'products' => 'required|array|min:1',
-            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.product_id' => 'required|exists:available_products,id',
             'products.*.quantity' => 'required|integer|min:1',
         ]);
 
         // تحقق من توفر الكميات المطلوبة في جدول available_products
         foreach ($request->products as $productData) {
             $availableQuantity = \DB::table('available_products')
-                ->where('product_id', $productData['product_id'])
+                ->where('id', $productData['product_id'])
                 ->value('quantity'); 
             if ($availableQuantity === null || $availableQuantity < $productData['quantity']) {
                 return redirect()->back()->withErrors("Quantity isn't available for {$productData['product_id']}");
@@ -62,12 +63,17 @@ class ExportInvoiceController extends Controller
 
         // تخزين كل منتج مع تحديث الكميات في available_products
         foreach ($request->products as $productData) {
-            $price = \DB::table('products')->where('id', $productData['product_id'])->value('price');
+            $price = $productData['price'];
             $quantity = $productData['quantity'];
             $subtotal = $price * $quantity;
 
+            $availableProduct = AvailableProduct::find($productData['product_id']);
+            $P_id = $availableProduct->product_id;
+
+
+
             $invoice->items()->create([
-                'product_id' => $productData['product_id'],
+                'product_id' => $P_id,
                 'quantity' => $quantity,
                 'price' => $price,
                 'subtotal' => $subtotal,
@@ -80,7 +86,7 @@ class ExportInvoiceController extends Controller
 
             // حذف السطر إذا الكمية أصبحت صفر أو أقل
             \DB::table('available_products')
-                ->where('product_id', $productData['product_id'])
+                ->where('id', $productData['product_id'])
                 ->where('quantity', '<=', 0)
                 ->delete();
         }

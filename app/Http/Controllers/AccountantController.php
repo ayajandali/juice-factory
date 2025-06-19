@@ -12,13 +12,11 @@ class AccountantController extends Controller
     {
         $importCount = ImportInvoice::count();
         $exportCount = ExportInvoice::count();
-        $lastInvoice = ImportInvoice::latest()->first();
+        
 
         return view('dashboards.accountant', [
             'importCount'       => $importCount,
             'exportCount'       => $exportCount,
-            'lastInvoiceNumber' => $lastInvoice?->invoice_number,
-            'lastInvoiceDate'   => $lastInvoice?->created_at?->format('d M Y'),
         ]);
     }
 }
