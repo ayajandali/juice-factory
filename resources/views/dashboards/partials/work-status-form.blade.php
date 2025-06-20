@@ -61,7 +61,7 @@
     </div>
 
     <!-- Submit Button -->
-    <x-primary-button class="mt-4 bg-blue-800 hover:bg-blue-900 text-white">Submit Status</x-primary-button>
+    <x-primary-button class="mt-4 bg-blue-500 hover:bg-blue-900 text-white">Submit Status</x-primary-button>
 
     <!-- Success / Error Messages -->
     @if (session('success'))

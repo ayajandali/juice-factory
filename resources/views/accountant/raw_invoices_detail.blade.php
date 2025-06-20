@@ -30,7 +30,6 @@
                         @foreach($invoice->items as $item)
                         <tr>
                             <td class="border px-4 py-2">{{ $item->rawMaterial->name ?? '-' }}</td>
-                            <td class="border px-4 py-2">{{ $item->rawMaterial->size ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $item->quantity }}</td>
                             <td class="border px-4 py-2">{{ $item->unit }}</td>
                             <td class="border px-4 py-2">{{ $item->price }}</td>
