@@ -17,6 +17,7 @@
                 </div>
             </div>
 
+            @if ($user->role === 'employee' || $user->role === 'super-employee')
             <!-- Machine Name Display -->
             <div class="bg-white p-6 shadow sm:rounded-lg mb-4">
                 <div class="flex justify-between items-center">
@@ -25,6 +26,7 @@
                            value="{{ $user->machine ? $user->machine->name : 'No Machine Assigned' }}" readonly>
                 </div>
             </div>
+            @endif
 
             <!-- Update Profile Information -->
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg mb-4">
@@ -40,12 +42,7 @@
                 </div>
             </div>
 
-            <!-- Delete Account -->
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg mb-4">
-                <div class="max-w-xl mx-auto">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+           
 
         </div>
     </div>
